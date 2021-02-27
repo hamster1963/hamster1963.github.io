@@ -22,7 +22,7 @@
 
   <!-- 页面元数据 -->
   
-  <title>关于 - HamsterStore</title>
+  <title>所有分类 - HamsterStore</title>
   
 
   
@@ -109,6 +109,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <p class="title"></p>
       <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
         <li><a id="s-comment" class="fas fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a id="s-toc" class="s-toc fas fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
         
       </ul>
     </div>
@@ -351,7 +353,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="full" class='cover-wrapper docs dock' style="display: none;">
+        <div id="full" class='cover-wrapper category dock' style="display: none;">
           
             <div id='cover-backstretch'></div>
           
@@ -412,72 +414,36 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         <div class="body-wrapper" id="pjax-container">
           
 
-<div class='l_main no_sidebar'>
-  <article class="article post white-box reveal md shadow article-type-docs" id="docs" itemscope itemprop="blogPost">
-  
 
-
-  
-  <div class="article-meta" id="top">
-    
-    
-    
-  </div>
-
-
-  
-  
-  
-  
+<div class='l_main'>
   
     
-    <div class='footer'>
-      
-      
-      
-      
-    </div>
-  
-  
+      <div class='post-wrapper'>
+        <article id="cat" class="post article white-box reveal shadow">
+          <h2>所有分类</h2>
+          <div class="all-cats">
+            
+          </div>
+          <br>
+          
+        </article>
+      </div>
     
-
-
-  <div class='article-meta' id="bottom">
-    <div class='new-meta-box'>
-      
-    </div>
-  </div>
-
-
   
-  
-
-  
-</article>
-
-
-  
-
-  <article class="post white-box reveal shadow" id="comments">
-    <p ct><i class='fas fa-comments'></i> 评论</p>
-    
-    <div id="valine_container" class="valine_thread">
-  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
-</div>
-
-  </article>
-
-
-
-
-
-
 </div>
 <aside class='l_side'>
   
+  
+    
+    
+
+
+
+
+  
+
 
 </aside>
-
 
 
 		  
@@ -489,7 +455,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   pdata.ispage=false;
   pdata.postTitle="";
   pdata.commentPath="";
-  pdata.commentPlaceholder="有什么想对我说的呢？";
+  pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
