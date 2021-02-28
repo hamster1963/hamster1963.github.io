@@ -102,7 +102,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
+<header id="l_header" class="l_header always shadow blur "  >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -289,7 +289,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="full" class='cover-wrapper tag dock' style="display: none;">
+        <div id="half" class='cover-wrapper tag dock' style="display: ;">
           
             <div id='cover-backstretch'></div>
           
@@ -306,11 +306,18 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div class='list-h'>
         
           
+            <a href="/"
+              
+              
+              id="home">
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0.1/assets/svg/1f64c.svg'><p>首页</p>
+            </a>
+          
             <a href="/categories/"
               
               
               id="categories">
-              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0.1/assets/svg/1f64c.svg'><p>源码</p>
+              <img src='https://cdn.jsdelivr.net/gh/twitter/twemoji@13.0.1/assets/svg/1f64c.svg'><p>分类</p>
             </a>
           
             <a href="/archives/"
@@ -389,14 +396,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.add("show");
+  l_header.classList.remove("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="none";
-    cover_wrapper.style.display="none";
+    cover_wrapper.id="half";
+    cover_wrapper.style.display="";
     
   
 </script>
