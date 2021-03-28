@@ -22,7 +22,9 @@
 
   <!-- 页面元数据 -->
   
-  <title>test_my_site - HamsterStore</title>
+  <title>在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo - HamsterStore</title>
+  
+    <meta name="keywords" content="macOS,M1,face_recognition,人脸识别">
   
 
   
@@ -665,21 +667,27 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
   
+    <div class='headimg-div'>
+      <a class='headimg-a'>
+        <img class='headimg' src='https://7.dusays.com/2021/03/27/11e9a61df4c0e.jpg'/>
+      </a>
+    </div>
+  
   <div class="article-meta" id="top">
     
     
     
       <h1 class="title">
-        test_my_site
+        在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo
       </h1>
       <div class='new-meta-box'>
         
           
             
 <div class='new-meta-item author'>
-  <a class='author' href="/" rel="nofollow">
+  <a class='author' href="" rel="nofollow">
     <img no-lazy src="https://7.dusays.com/2021/03/04/283201a4d5208.jpg">
-    <p>仓鼠先生</p>
+    <p>Hamster</p>
   </a>
 </div>
 
@@ -687,6 +695,13 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         
           
             
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/categories/python%E5%BC%80%E5%8F%91/">python开发</a>
+    </a>
+  </div>
+
 
           
         
@@ -694,7 +709,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
             <div class="new-meta-item date">
   <a class='notlink'>
     <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
-    <p>发布于：2021年3月1日</p>
+    <p>发布于：2021年3月27日</p>
   </a>
 </div>
 
@@ -705,11 +720,29 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <div class="new-meta-item browse leancloud">
     <a class='notlink'>
       
-      <div id="lc-pv" data-title="test_my_site" data-path="/2021/03/01/test-my-site-3/">
+      <div id="lc-pv" data-title="在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo" data-path="/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">
         <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
         <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
         次浏览
       </div>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  <div class="new-meta-item wordcount">
+    <a class='notlink'>
+      <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+      <p>字数：1.8k字</p>
+    </a>
+  </div>
+  <div class="new-meta-item readtime">
+    <a class='notlink'>
+      <i class="fas fa-hourglass-half fa-fw" aria-hidden="true"></i>
+      <p>时长：6分钟</p>
     </a>
   </div>
 
@@ -723,7 +756,209 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
   
   
-  
+  <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在搭载M1芯片的mac上顺利进行开发是一件不仅随缘而且需要人品的事情，不仅仅因为M1芯片的ARM架构所带来的编译方式的不同，bugsur新的文件路径系统以及时不时的抽风也使得顺利开发的路上艰难险阻。今天就来看看GitHub上大名鼎鼎的开源人脸库face_recognition如何比较顺利地在M1上跑起来且实现简单的实时人脸识别的功能。</p>
+<div class="note warning"><p>由于不可描述的原因，网络环境所造成的安装失败不在本文讨论范围中。</p></div>
+
+
+<h1 id="第一部分-关于环境的那点事"><a href="#第一部分-关于环境的那点事" class="headerlink" title="第一部分  关于环境的那点事"></a>第一部分  关于环境的那点事</h1><h2 id="网络环境搭建"><a href="#网络环境搭建" class="headerlink" title="网络环境搭建"></a>网络环境搭建</h2><div class="note success"><p>建议进行设置省去不必要的麻烦</p></div>
+
+<p>大部分的环境搭建与库安装需要使用终端进行，由于终端默认并不走代理的网络，</p>
+<p>为了此后下载的顺利，先需要设置终端也可以使用代理。</p>
+<p>首先，在当前用户根目录新建一个文件名为 .bash_profile的空白文本「. 开头文件为隐藏文件」，然后输入以下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">function proxy_off()&#123;</span><br><span class="line">        unset http_proxy</span><br><span class="line">        unset https_proxy</span><br><span class="line">        unset ftp_proxy</span><br><span class="line">        unset rsync_proxy</span><br><span class="line">        echo -e &quot;已关闭代理&quot;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">function proxy_on() &#123;</span><br><span class="line">        export no_proxy&#x3D;&quot;localhost,127.0.0.1,localaddress,.localdomain.com&quot;</span><br><span class="line">        export http_proxy&#x3D;&quot;http:&#x2F;&#x2F;127.0.0.1:1087&quot;</span><br><span class="line">        export https_proxy&#x3D;$http_proxy</span><br><span class="line">        export ftp_proxy&#x3D;$http_proxy</span><br><span class="line">        export rsync_proxy&#x3D;$http_proxy</span><br><span class="line">        export HTTP_PROXY&#x3D;$http_proxy</span><br><span class="line">        export HTTPS_PROXY&#x3D;$http_proxy</span><br><span class="line">        export FTP_PROXY&#x3D;$http_proxy</span><br><span class="line">        export RSYNC_PROXY&#x3D;$http_proxy</span><br><span class="line">        echo -e &quot;已开启代理&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>export no_proxy</strong>与<strong>export http_proxy</strong>填入对应的本地代理服务器地址以及端口</p>
+<p>可以在你的代理软件中查看</p>
+<img src="https://7.dusays.com/2021/03/27/0ee7bca4f1229.jpg" class="lazyload" data-srcset="https://7.dusays.com/2021/03/27/0ee7bca4f1229.jpg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" style="zoom:67%;"  >
+将文件配置好并放在用户根目录后
+
+<h3 id="当让终端走代理的时候，输入："><a href="#当让终端走代理的时候，输入：" class="headerlink" title="当让终端走代理的时候，输入："></a>当让终端走代理的时候，输入：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source  ~&#x2F;.bash_profile</span><br><span class="line">proxy_on</span><br></pre></td></tr></table></figure>
+
+<h3 id="想关闭代理的时候，输入："><a href="#想关闭代理的时候，输入：" class="headerlink" title="想关闭代理的时候，输入："></a>想关闭代理的时候，输入：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">proxy_off</span><br></pre></td></tr></table></figure>
+
+<div class="note radiation yellow"><p>此为一次性设置，关闭终端后失效</p></div>
+
+<h2 id="基本环境搭建"><a href="#基本环境搭建" class="headerlink" title="基本环境搭建"></a>基本环境搭建</h2><h3 id="安装python最新版本"><a href="#安装python最新版本" class="headerlink" title="安装python最新版本"></a>安装python最新版本</h3><p>从python官网下载最新版本python 记得选中 <a target="_blank" rel="noopener" href="https://www.python.org/ftp/python/3.9.2/python-3.9.2-macos11.pkg">macOS 64-bit universal2 installer</a></p>
+<div class="note link green"><p><a target="_blank" rel="noopener" href="https://www.python.org/downloads/mac-osx/">https://www.python.org/downloads/mac-osx/</a></p></div>
+
+<p>安装完成后在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open ~&#x2F;.bash_profile </span><br></pre></td></tr></table></figure>
+
+<p>在文件中加上一行环境变量配置后保存退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;bin:$PATH   </span><br></pre></td></tr></table></figure>
+
+<p>重新打开终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source ~&#x2F;.bash_profile </span><br><span class="line">python3 --version     -------注意是python3</span><br></pre></td></tr></table></figure>
+
+<p>顺利的话你会在终端中看到python的版本号信息，python安装到此结束</p>
+<h3 id="各种依赖包安装"><a href="#各种依赖包安装" class="headerlink" title="各种依赖包安装"></a>各种依赖包安装</h3><div class="note radiation yellow"><p>头铁的可以试试直接安装 设置好终端网络代理后 在终端中输入 pip3 install face_recognition</p></div>
+<p>在安装face_recognition之前我们需要安装</p>
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>homebrew</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>miniforge</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>numpy</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>openblas</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>opencv</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>cmake</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>dlib</p>
+            </div>
+
+<h3 id="安装homebrew"><a href="#安装homebrew" class="headerlink" title="安装homebrew"></a>安装homebrew</h3><div class="note warning"><p>唯一的重点是配置环境变量</p></div>
+
+<p>下载安装过程略</p>
+<p>安装完成后根据提示在终端中输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open ~&#x2F; .zprofile</span><br></pre></td></tr></table></figure>
+
+<p>在文件中加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eval &quot;$(&#x2F;opt&#x2F;homebrew&#x2F;bin&#x2F;brew shellenv)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>保存后重启homebrew，在终端中输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew</span><br></pre></td></tr></table></figure>
+
+<p>如果出现各种指令提示，证明安装成功</p>
+<h3 id="安装miniforge"><a href="#安装miniforge" class="headerlink" title="安装miniforge"></a>安装miniforge</h3><div class="note radiation yellow"><p>鉴于M1版本的开发工具适配进程目前并不同步，所以这里使用miniforge来进行库管理</p></div>
+
+<p>在网站中选择Apple Silicon版本下载，下载后直接运行即可</p>
+<img src="https://7.dusays.com/2021/03/28/539b13f9168dc.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/539b13f9168dc.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" width="50%">
+
+<p>接下来我们需要在终端中激活</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create -n myenv python&#x3D;3.9 &#x2F;&#x2F;创建名为myenv，python版本为3.9的环境</span><br><span class="line">conda activate myenv &#x2F;&#x2F;激活环境</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装numpy"><a href="#安装numpy" class="headerlink" title="安装numpy"></a>安装numpy</h3><emp>激活conda</emp>且配置好网络代理后可以直接在终端中输入
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install numpy&#x3D;1.9.14</span><br></pre></td></tr></table></figure>
+
+<p>等待下载安装，安装完成后检测是否安装成功，在终端中输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3</span><br><span class="line">&gt;&gt;&gt;<span class="keyword">import</span> numpy</span><br></pre></td></tr></table></figure>
+
+<p>没报错的话就安装成功了</p>
+<h3 id="安装openblas"><a href="#安装openblas" class="headerlink" title="安装openblas"></a>安装openblas</h3><emp>激活conda</emp>且配置好网络代理后可以直接在终端中输入
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install openblas</span><br></pre></td></tr></table></figure>
+
+<p>等待下载安装，安装完成后检测是否安装成功，在终端中输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 </span><br><span class="line">&gt;&gt;&gt;<span class="keyword">import</span> openblas</span><br></pre></td></tr></table></figure>
+
+<p>没报错安装成功</p>
+<h3 id="需要编译的库"><a href="#需要编译的库" class="headerlink" title="需要编译的库"></a>需要编译的库</h3><div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>opencv</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>cmake</p>
+            </div>
+
+<div class='checkbox plus green checked'><input type="checkbox" checked="checked"/>
+            <p>dlib</p>
+            </div>
+
+<div class="note radiation yellow"><p>这三个包如果安装失败，可以多试几次，cmake有概率编译失败</p></div>
+
+<h3 id="安装opencv"><a href="#安装opencv" class="headerlink" title="安装opencv"></a>安装opencv</h3><p>点击链接下载opencv库，<emp>仅适用于M1芯片</emp></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/wizyoung/AppleSiliconSelfBuilds/blob/main/builds/opencv_contrib_python-4.5.0+bbaa777-cp39-cp39-macosx_11_0_arm64.whl">opencv_contrib_python-4.5.0+bbaa777-cp39-cp39-macosx_11_0_arm64.whl</a></p>
+<p>在终端中激活环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda activate myenv &#x2F;&#x2F;激活环境</span><br></pre></td></tr></table></figure>
+
+<p>定位到下载目录并安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd 目录</span><br><span class="line">pip3 install opencv_contrib_python-4.5.0+bbaa777-cp39-cp39-macosx_11_0_arm64.whl</span><br></pre></td></tr></table></figure>
+
+<p>等待安装即可</p>
+<h3 id="安装cmake"><a href="#安装cmake" class="headerlink" title="安装cmake"></a>安装cmake</h3><p>终端配置好网络代理后输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install cmake &#x2F;&#x2F;安装cmake</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装Dlib"><a href="#安装Dlib" class="headerlink" title="安装Dlib"></a>安装Dlib</h3><emp>激活conda</emp>且配置好网络代理后直接在终端中输入
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install dlib </span><br></pre></td></tr></table></figure>
+
+<p>安装后在终端输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3</span><br><span class="line">&gt;&gt;&gt;import dlib</span><br></pre></td></tr></table></figure>
+
+<p>如果未报错恭喜你安装成功，我们就差最后一步了</p>
+<p>对着检查一下吧</p>
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>homebrew</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>miniforge</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>numpy</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>openblas</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>opencv</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>cmake</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>dlib</p>
+            </div>
+
+<h2 id="安装face-recognition"><a href="#安装face-recognition" class="headerlink" title="安装face_recognition"></a>安装face_recognition</h2><emp>激活conda</emp>且配置好网络代理后直接在终端中输入
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install face_recognition</span><br></pre></td></tr></table></figure>
+
+<div class="note bug red"><p>如果出现了任何错误，欢迎在评论区告诉我</p></div>
+
+<div class="note info"><p>此过程需要网络以及人品双buff叠加，请坐和放宽……</p></div>
+
+<p>安装完成后在终端中输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3</span><br><span class="line">&gt;&gt;&gt;<span class="keyword">import</span> face_recognition</span><br></pre></td></tr></table></figure>
+
+<p>如果没有报错证明万里长征我们已经走了一半了。</p>
+<p>也可以使用 pip3 list 命令来查看所有已经安装的库 如图</p>
+<p><img src="https://7.dusays.com/2021/03/28/3454108072969.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/3454108072969.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WX20210328-144743@2x.png"></p>
+<p>到此安装告一段落</p>
+<h1 id="第二部分-开始造轮子吧"><a href="#第二部分-开始造轮子吧" class="headerlink" title="第二部分  开始造轮子吧"></a>第二部分  开始造轮子吧</h1><p>由于安装这些依赖和库可能已经损耗你的大部分精力了，</p>
+<p>所以接下来我们就快速地来看看怎么把这个简单的实时人脸识别跑起来吧。</p>
+<div class="note radiation yellow"><p>摄像头是必须的，所以不要关上盖子运行接下来的步骤</p></div>
+
+<h3 id="下载py文件"><a href="#下载py文件" class="headerlink" title="下载py文件"></a>下载py文件</h3><p>从GitHub上下载<a target="_blank" rel="noopener" href="https://github.com/ageitgey/face_recognition/blob/master/examples/facerec_from_webcam_faster.py">facerec_from_webcam_faster.py</a></p>
+<h3 id="使用编辑器编辑"><a href="#使用编辑器编辑" class="headerlink" title="使用编辑器编辑"></a>使用编辑器编辑</h3><p>用你喜欢的编辑器打开，这里使用vscode示范，下面代码都是从源文件中截出，对应修改即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Load a sample picture and learn how to recognize it.</span></span><br><span class="line"></span><br><span class="line">图片人名1_image = face_recognition.load_image_file(<span class="string">&quot;把这里改成你要识别的图片的路径&quot;</span>)   </span><br><span class="line"></span><br><span class="line">图片人名1_face_encoding = face_recognition.face_encodings(图片人名1_image)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load a second sample picture and learn how to recognize it.</span></span><br><span class="line"></span><br><span class="line">图片人名2_image = face_recognition.load_image_file(<span class="string">&quot;把这里改成你要识别的图片2的路径&quot;</span>)</span><br><span class="line"></span><br><span class="line">图片人名2_face_encoding = face_recognition.face_encodings(图片人名1_image)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create arrays of known face encodings and their names</span></span><br><span class="line">known_face_encodings = [</span><br><span class="line">    图片人名1_face_encoding,</span><br><span class="line">    图片人名2_face_encoding</span><br><span class="line">]</span><br><span class="line">known_face_names = [</span><br><span class="line">    <span class="string">&quot;图片1所对应的全名&quot;</span>,</span><br><span class="line">    <span class="string">&quot;图片2所对应的全名&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>如图，图片1为Obama，图片2为biden</p>
+<img src="https://7.dusays.com/2021/03/28/b642e2e47dca0.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/b642e2e47dca0.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WX20210328-193809@2x.png"  />
+
+<h3 id="运行一下吧！"><a href="#运行一下吧！" class="headerlink" title="运行一下吧！"></a>运行一下吧！</h3><p>打开终端，输入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 &lt;将文件拖到这里或者粘贴文件的路径&gt;</span><br></pre></td></tr></table></figure>
+
+<p>就像这样</p>
+<p><img src="https://7.dusays.com/2021/03/28/5a801ee53b557.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/5a801ee53b557.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WX20210328-195510@2x.png"> </p>
+<p>按下回车等待奇迹的发生</p>
+<p>不出意外的话，掏出你的小手机拿出一张照片或者把你的脸对准摄像头，就可以看到</p>
+<img src="https://7.dusays.com/2021/03/28/99aa9b9988185.jpg" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/99aa9b9988185.jpg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="521616932197_.pic_hd.jpg" style="zoom:60%;" />
+
+<h2 id="大功告成啦！"><a href="#大功告成啦！" class="headerlink" title="大功告成啦！"></a>大功告成啦！</h2><h1 id="尾巴"><a href="#尾巴" class="headerlink" title="尾巴"></a>尾巴</h1><p>总体来说跑起这个小项目还是基本没有难度的，最主要的是有稳定的网络以及足够的耐心</p>
+<p>face_recognition这个库具有很多方向的应用，今天只是简单地入门一下，还有很多玩法可以发掘哦！</p>
+<div class="note quote"><p>谢谢阅读，欢迎你的留言！</p></div>
   
   
     
@@ -740,7 +975,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
               
             
               
-                <p>本文永久链接是：<a href=http://hamster1963.github.io/2021/03/01/test-my-site-3/>http://hamster1963.github.io/2021/03/01/test-my-site-3/</a></p>
+                <p>本文永久链接是：<a href=http://hamster1963.github.io/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/>http://hamster1963.github.io/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/</a></p>
               
             
           </blockquote>
@@ -757,10 +992,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <div class='new-meta-box'>
       
         
-          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-03-01T00:14:17+08:00">
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-03-28T20:23:46+08:00">
   <a class='notlink'>
     <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
-    <p>更新于：2021年3月1日</p>
+    <p>更新于：2021年3月28日</p>
   </a>
 </div>
 
@@ -768,6 +1003,9 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         
           
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/macOS/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>macOS</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/M1/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>M1</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/face-recognition/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>face_recognition</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>人脸识别</p></a></div>
+
 
         
       
@@ -781,15 +1019,10 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class="prev-next">
       
-        <a class='prev' href='/2021/03/01/test-my-site-4/'>
-          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>test_my_site</p>
-          <p class='content'></p>
-        </a>
       
-      
-        <a class='next' href='/2021/03/01/test-my-site-2/'>
-          <p class='title'>test_my_site<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
-          <p class='content'></p>
+        <a class='next' href='/2021/03/01/hello-world/'>
+          <p class='title'>Hello World<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any ...</p>
         </a>
       
     </div>
@@ -822,256 +1055,20 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
-
-  
-
-  
-    
-    
-
-<section class="widget blogger shadow floatable desktop">
-  <div class='content'>
-    
-      
-        <a class='avatar flat-box rectangle' href='/about/'>
-          <img no-lazy src='https://7.dusays.com/2021/03/04/283201a4d5208.jpg'/>
-        </a>
-      
-    
-    
-      <div class='text'>
-        
-          <h2>仓鼠杂货铺</h2>
-        
-        
-          <p>JAZZLIVE test123456</p>
-
-        
-        
-      </div>
-    
-    
-      <div class="social-wrapper">
-        
-          
-            <a href="https://www.google.com"
-              class="social fas fa-rss flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="mailto:liaolaixin@gmail.com"
-              class="social fas fa-envelope flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://github.com/hamster1963/hamster1963.github.io"
-              class="social fab fa-github flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-          
-            <a href="https://music.163.com/#/user/home?id=1671539900"
-              class="social fas fa-headphones-alt flat-btn"
-              target="_blank"
-              rel="external nofollow noopener noreferrer">
-              
-            </a>
-          
-        
-      </div>
-    
-  </div>
-</section>
-
-  
-
-  
-    
-    
-
-  
-
-  
-    
-    
-  
-
-  <section class="widget tagcloud shadow floatable desktop mobile">
+  <section class="widget toc-wrapper shadow floatable desktop mobile" id="toc-div" >
     
   <header>
     
-      <a href='/tags/'><i class="fas fa-tags fa-fw" aria-hidden="true"></i><span class='name'>热门标签</span></a>
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
     
   </header>
 
 
     <div class='content'>
-      <a href="/tags/test/" style="font-size: 14px; color: #999">test</a>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">网络环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%BE%93%E5%85%A5%EF%BC%9A"><span class="toc-text">当让终端走代理的时候，输入：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%83%B3%E5%85%B3%E9%97%AD%E4%BB%A3%E7%90%86%E7%9A%84%E6%97%B6%E5%80%99%EF%BC%8C%E8%BE%93%E5%85%A5%EF%BC%9A"><span class="toc-text">想关闭代理的时候，输入：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-text">基本环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85python%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC"><span class="toc-text">安装python最新版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E4%BE%9D%E8%B5%96%E5%8C%85%E5%AE%89%E8%A3%85"><span class="toc-text">各种依赖包安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85homebrew"><span class="toc-text">安装homebrew</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85miniforge"><span class="toc-text">安装miniforge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85numpy"><span class="toc-text">安装numpy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85openblas"><span class="toc-text">安装openblas</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E7%BC%96%E8%AF%91%E7%9A%84%E5%BA%93"><span class="toc-text">需要编译的库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85opencv"><span class="toc-text">安装opencv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85cmake"><span class="toc-text">安装cmake</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85Dlib"><span class="toc-text">安装Dlib</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85face-recognition"><span class="toc-text">安装face_recognition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BDpy%E6%96%87%E4%BB%B6"><span class="toc-text">下载py文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%BC%96%E8%BE%91%E5%99%A8%E7%BC%96%E8%BE%91"><span class="toc-text">使用编辑器编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-text">例子</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E4%B8%80%E4%B8%8B%E5%90%A7%EF%BC%81"><span class="toc-text">运行一下吧！</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90%E5%95%A6%EF%BC%81"><span class="toc-text">大功告成啦！</span></a></li></ol>
     </div>
   </section>
 
-
-  
-
-  
-    
-    
-
-<section class="widget shadow floatable desktop mobile">
-  
-  <header>
-    
-      <i class="fas fa-award fa-fw" aria-hidden="true"></i><span class='name'>站点信息</span>
-    
-  </header>
-
-
-  <div class='content'>
-    <div class="webinfo">
-      
-        <div class="webinfo-item">
-          <div>文章数目：</div>
-          <div>6 篇</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>已运行时间：</div>
-          <div id="webinfo-runtime-count" publish_date="03/24/2020 21:34:09"></div>
-        </div>
-        <script>
-          var BirthDay = new Date(new Date('2021/02/27'));
-          var today = new Date();
-          var timeold = (today.getTime() - BirthDay.getTime());
-          var daysold = Math.floor(timeold / (24 * 60 * 60 * 1000));
-          document.getElementById('webinfo-runtime-count').innerHTML = daysold + ' 天';
-        </script>
-      
-
-
-      
-        <div class="webinfo-item">
-          <div>本站总字数：</div>
-          <div>111 字</div>
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站访客数：</div>
-          
-          <div><span id="lc-uv"><span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span></span> 人</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>本站总访问量：</div>
-          
-          <div><span id="lc-sv"><span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span></span> 次</div>
-          
-        </div>
-      
-
-      
-        <div class="webinfo-item">
-          <div>最后活动时间：</div>
-          
-            <div id="last-update" style="display: none;">Mon Mar 08 2021 21:56:19 GMT+0800 (GMT+08:00)</div>
-            <div id="last-update-show">2021-03-08 日</div>
-          
-        </div>
-        
-        <script>
-          function timeago(dateTimeStamp) {
-              var minute = 1000 * 60; //把分，时，天，周，半个月，一个月用毫秒表示
-              var hour = minute * 60;
-              var day = hour * 24;
-              var week = day * 7;
-              var month = day * 30;
-              var now = new Date().getTime(); //获取当前时间毫秒
-              var diffValue = now - dateTimeStamp; //时间差
-              if (diffValue < 0) {
-                  return;
-              }
-              var minC = diffValue / minute; //计算时间差的分，时，天，周，月
-              var hourC = diffValue / hour;
-              var dayC = diffValue / day;
-              var weekC = diffValue / week;
-              var monthC = diffValue / month;
-              if (monthC >= 1 && monthC <= 3) {
-                  result = " " + parseInt(monthC) + " 月前"
-              } else if (weekC >= 1 && weekC <= 3) {
-                  result = " " + parseInt(weekC) + " 周前"
-              } else if (dayC >= 1 && dayC <= 6) {
-                  result = " " + parseInt(dayC) + " 天前"
-              } else if (hourC >= 1 && hourC <= 23) {
-                  result = " " + parseInt(hourC) + " 小时前"
-              } else if (minC >= 1 && minC <= 59) {
-                  result = " " + parseInt(minC) + " 分钟前"
-              } else if (diffValue >= 0 && diffValue <= minute) {
-                  result = "刚刚"
-              } else {
-                  var datetime = new Date();
-                  datetime.setTime(dateTimeStamp);
-                  var Nyear = datetime.getFullYear();
-                  var Nmonth = datetime.getMonth() + 1 < 10 ? "0" + (datetime.getMonth() + 1) : datetime.getMonth() + 1;
-                  var Ndate = datetime.getDate() < 10 ? "0" + datetime.getDate() : datetime.getDate();
-                  var Nhour = datetime.getHours() < 10 ? "0" + datetime.getHours() : datetime.getHours();
-                  var Nminute = datetime.getMinutes() < 10 ? "0" + datetime.getMinutes() : datetime.getMinutes();
-                  var Nsecond = datetime.getSeconds() < 10 ? "0" + datetime.getSeconds() : datetime.getSeconds();
-                  result = Nyear + "-" + Nmonth + "-" + Ndate
-              }
-              return result;
-          }
-          var lastUpDate = document.getElementById('last-update').innerHTML;
-          try {
-            document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
-          } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2021-03-08 日';
-          }
-        </script>
-        
-      
-    </div>
-  </div>
-</section>
-
-  
-
-  
-    
-    
-
-<section class="widget text shadow floatable desktop mobile">
-  
-  <header>
-    
-      <a target="_blank" rel="noopener" href='https://github.com/hamster1963/hamster1963.github.io'><i class="fab fa-github fa-fw" aria-hidden="true"></i><span class='name'>关于此网站</span></a>
-    
-  </header>
-
-
-  <div class='content'>
-    
-      <p>此网站完全开源且共享<br>源码点击上方的GitHub图标获取<br>我爱方大同</p>
-
-    
-  </div>
-</section>
 
   
 
@@ -1087,7 +1084,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <script>
   window.pdata={}
   pdata.ispage=true;
-  pdata.postTitle="test_my_site";
+  pdata.postTitle="在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo";
   pdata.commentPath="";
   pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
