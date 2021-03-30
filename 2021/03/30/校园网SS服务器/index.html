@@ -22,9 +22,13 @@
 
   <!-- 页面元数据 -->
   
-  <title>所有分类 - HamsterStore</title>
+  <title>利用python写一个自动获取局域网ip地址并开启SS服务器的小工具 - HamsterStore</title>
+  
+    <meta name="keywords" content="python,服务器,SS,校园网,网络">
   
 
+  
+    <meta name="description" content="通过搭建简易SS服务器绕过校园网单设备限制">
   
 
   <!-- feed -->
@@ -583,7 +587,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper category search' style="display: ;">
+        <div id="half" class='cover-wrapper post search' style="display: ;">
           
             <div id='cover-backstretch'></div>
           
@@ -659,31 +663,256 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         <div class="body-wrapper" id="pjax-container">
           
 
-
 <div class='l_main'>
+  <article class="article post white-box reveal md shadow article-type-post" id="post" itemscope itemprop="blogPost">
   
+
+
+  
+    <div class='headimg-div'>
+      <a class='headimg-a'>
+        <img class='headimg' src='https://7.dusays.com/2021/03/30/2c3020f6cf209.jpg'/>
+      </a>
+    </div>
+  
+  <div class="article-meta" id="top">
     
-      <div class='post-wrapper'>
-        <article id="cat" class="post article white-box reveal shadow">
-          <h2>所有分类</h2>
-          <div class="all-cats">
-            
-              
-                <a class="" href="/categories/python%E5%BC%80%E5%8F%91/">
-                  <span><i class='fas fa-folder-open fa-fw' aria-hidden="true"></i>&nbsp;&nbsp;python开发</span>
-                  <span class="title">
-                    (2)
-                  </span>
-                </a>
-              
-            
-          </div>
-          <br>
+    
+    
+      <h1 class="title">
+        利用python写一个自动获取局域网ip地址并开启SS服务器的小工具
+      </h1>
+      <div class='new-meta-box'>
+        
           
-        </article>
+            
+<div class='new-meta-item author'>
+  <a class='author' href="" rel="nofollow">
+    <img no-lazy src="https://7.dusays.com/2021/03/04/283201a4d5208.jpg">
+    <p>Hamster</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fas fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/categories/python%E5%BC%80%E5%8F%91/">python开发</a>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2021年3月30日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="利用python写一个自动获取局域网ip地址并开启SS服务器的小工具" data-path="/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+        <i class="fas fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  <div class="new-meta-item wordcount">
+    <a class='notlink'>
+      <i class="fas fa-keyboard fa-fw" aria-hidden="true"></i>
+      <p>字数：1.7k字</p>
+    </a>
+  </div>
+  <div class="new-meta-item readtime">
+    <a class='notlink'>
+      <i class="fas fa-hourglass-half fa-fw" aria-hidden="true"></i>
+      <p>时长：6分钟</p>
+    </a>
+  </div>
+
+
+          
+        
       </div>
     
+  </div>
+
+
   
+  
+  <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        这个学年学校把宽带运营商从之前的联通大哥哥换成了如今的电信小弟弟，使用体验可谓一落千丈，最主要的原因是电信不再像联通提供拨号上网的账号和密码，改成了强制使用天翼校园的程序来进行认证上网，而且限制只能一台设备在线，这直接搞垮了宿舍内的一堆需要联网的设备，首先想到的是通过电脑先连接在共享给路由器，感谢这位兄弟提供的方法@<a target="_blank" rel="noopener" href="https://blog.csdn.net/cbcrzcbc/article/details/108612445?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522161707454916780271558206%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=161707454916780271558206&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_click~default-5-108612445.pc_search_result_no_baidu_js&utm_term=%E5%A4%A9%E7%BF%BC%E6%A0%A1%E5%9B%AD">task138</a>，但是转念一想，既然学校内覆盖了校园网，那是否可以使用电脑搭建服务器从而达到在校园网范围内手机或者iPad都可以上网呢?这就是今天讨论的方法。</p>
+<div class="note warning"><p>此方法仅限交流，请勿在保密场所使用</p></div>
+
+<div class="note radiation yellow"><p>目前仅适用于Windows</p></div>
+
+<div class="note link green"><p>源码: <a target="_blank" rel="noopener" href="https://github.com/hamster1963/-SS">https://github.com/hamster1963/-SS</a></p></div>
+
+
+
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>自动获取本机局域网地址并写入配置文件</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>自动获取本机局域网地址并写入配置文件</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>开启时显示各项配置参数，帮助使用者配置代理软件</p>
+            </div>
+
+<div class='checkbox green checked'><input type="checkbox" checked="checked"/>
+            <p>开启SS代理服务器，出错时显示错误弹窗</p>
+            </div>
+
+<h2 id="原理与改进"><a href="#原理与改进" class="headerlink" title="原理与改进"></a>原理与改进</h2><p>开启SS代理服务器部分参考了GitHub上的<a target="_blank" rel="noopener" href="https://github.com/shadowsocks/libQtShadowsocks">shadowsocks-libqss</a>项目，需要使用者手动填写config文件，使用起来学习成本有一点高，且如果没有成功运行也没有错误提示，所以使用python编写一个小脚本改进一下，以达到上述的功能。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="windows开启服务器"><a href="#windows开启服务器" class="headerlink" title="windows开启服务器"></a>windows开启服务器</h3><p>想开启SS代理服务器十分简单，如果不想更改默认的端口、密码、加密方式，可以直接双击使用<span class='p green'>开启SS代理服务器.exe</span>，打开后根据弹窗配置自己的代理软件，安卓小飞机，苹果小火箭，windows使用clash，macOS使用surge。</p>
+<p>一切顺利后应该是这样的界面</p>
+<p><img src="https://7.dusays.com/2021/03/30/f64bfa25f2650.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/30/f64bfa25f2650.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WechatIMG60.png"></p>
+<h3 id="ios使用小火箭连接"><a href="#ios使用小火箭连接" class="headerlink" title="ios使用小火箭连接"></a>ios使用小火箭连接</h3><p>在小火箭中点击右上角加号，类型选择Shadowsocks，根据配置弹窗中的信息，填入相关配置，混淆与插件为空。如图:</p>
+<img src="https://7.dusays.com/2021/03/31/ca402d804ae31.jpeg" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/ca402d804ae31.jpeg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="IMG_42143F5BF2D2-1.jpeg" style="zoom:33%;" />
+
+<h3 id="macos使用surge连接"><a href="#macos使用surge连接" class="headerlink" title="macos使用surge连接"></a>macos使用surge连接</h3><p>打开surge面板，在策略中选择添加</p>
+<img src="https://7.dusays.com/2021/03/31/08eb650532af2.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/08eb650532af2.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.43.35.png" style="zoom: 67%;" />
+
+<p>填入配置信息，出站选择全局代理即可</p>
+<img src="https://7.dusays.com/2021/03/31/3d70095069d6d.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/3d70095069d6d.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.44.03.png" style="zoom:67%;" />
+
+<p><img src="https://7.dusays.com/2021/03/31/42ed00a2d751b.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/42ed00a2d751b.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.46.18.png"></p>
+<p>surge教程到此结束</p>
+<h2 id="程序编写"><a href="#程序编写" class="headerlink" title="程序编写"></a>程序编写</h2><p>我们的目标其实很简单，就是获取当前IP地址并且写入到config文件中，并在启动服务器时有弹窗包含主要配置信息提醒用户。</p>
+<h3 id="获取ip地址"><a href="#获取ip地址" class="headerlink" title="获取ip地址"></a>获取ip地址</h3><p>这是一个很通用的获取本机局域网ip地址的方法，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取实时IP地址</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    查询本机ip地址</span></span><br><span class="line"><span class="string">    :return: ip</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">        s.connect((<span class="string">&#x27;8.8.8.8&#x27;</span>, <span class="number">80</span>))</span><br><span class="line">        ip = s.getsockname()[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        s.close()</span><br><span class="line">    <span class="keyword">return</span> ip</span><br></pre></td></tr></table></figure>
+
+<h3 id="将ip地址写入配置文件"><a href="#将ip地址写入配置文件" class="headerlink" title="将ip地址写入配置文件"></a>将ip地址写入配置文件</h3><p>配置文件的类型是json，在python中我们可以很轻松地修改json文件内的值，只需要知道key和value的对应关系即可，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将IP地址写入json文件</span></span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;config.json&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line">    data[<span class="string">&#x27;server&#x27;</span>] = get_host_ip() <span class="comment"># &lt;--- 添加实时ip地址.</span></span><br><span class="line"></span><br><span class="line">os.remove(filename)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data, f, indent=<span class="number">4</span>)</span><br></pre></td></tr></table></figure>
+
+<p>由于上面的 get_host_ip()是直接返还ip地址的，所以在server的value部分我们直接使用get_host_ip()即可。</p>
+<h3 id="读取基础配置信息"><a href="#读取基础配置信息" class="headerlink" title="读取基础配置信息"></a>读取基础配置信息</h3><p>在开屏弹窗中我们需要显示基本信息，所以我们先需要读取json文件内的我们需要的value值，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#读取json 获取端口/密码/加密方式</span></span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;config.json&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line">    a = data[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">    b = data[<span class="string">&#x27;server_port&#x27;</span>]</span><br><span class="line">    c = data[<span class="string">&#x27;method&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="弹窗"><a href="#弹窗" class="headerlink" title="弹窗"></a>弹窗</h3><p>弹窗使用的是tkinter库，语法也十分简单，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">talk</span>():</span></span><br><span class="line">    tkinter.messagebox.showinfo(<span class="string">&quot;提示&quot;</span>,<span class="string">&quot;你的ip地址是&quot;</span> + get_host_ip()+<span class="string">&quot;\n你的端口号是&quot;</span>+<span class="built_in">str</span>(b)+<span class="string">&quot;\n你的密码是&quot;</span> + a + <span class="string">&quot;\n加密方式是&quot;</span>+ c +<span class="string">&quot;\n请勿关闭cmd窗口&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>实现界面如图</p>
+<img src="https://7.dusays.com/2021/03/31/02c5215d1e3e8.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/02c5215d1e3e8.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.39.39.png" style="zoom:50%;" />
+
+<h3 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h3><p>基本的小组件都写好了我们最后就把积木拼成小车车🚗就可以了,加入检测是否运行成功的弹窗，代码如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主程序</span></span><br><span class="line">netopen = threading.Thread(target=runserver)<span class="comment">#, daemon=True)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    netopen.start()</span><br><span class="line">    <span class="keyword">if</span> netopen.is_alive() == <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#弹窗显示</span></span><br><span class="line">        talk()</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;欢迎&quot;</span>,<span class="string">&quot;开启成功,如需退出请关闭cmd窗口&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span>  netopen.is_alive() == <span class="literal">False</span>:</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;退出&quot;</span>,<span class="string">&quot;服务已退出，请检查配置&quot;</span>)</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+<div class="note quote"><p>由于我们是调用了外部的程序，所以这里使用线程监控来实现检测服务器程序是否正确运行。</p></div>
+
+<h3 id="大功告成"><a href="#大功告成" class="headerlink" title="大功告成"></a>大功告成</h3><p>完整源码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"><span class="keyword">import</span> tkinter</span><br><span class="line"><span class="keyword">import</span> tkinter.messagebox</span><br><span class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化弹窗</span></span><br><span class="line">root = tkinter.Tk()</span><br><span class="line">root.withdraw()</span><br><span class="line">root.wm_attributes(<span class="string">&#x27;-topmost&#x27;</span>,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#获取实时IP地址</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_ip</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    查询本机ip地址</span></span><br><span class="line"><span class="string">    :return: ip</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)</span><br><span class="line">        s.connect((<span class="string">&#x27;8.8.8.8&#x27;</span>, <span class="number">80</span>))</span><br><span class="line">        ip = s.getsockname()[<span class="number">0</span>]</span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        s.close()</span><br><span class="line">    <span class="keyword">return</span> ip</span><br><span class="line"></span><br><span class="line"><span class="comment">#将IP地址写入json文件</span></span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;config.json&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line">    data[<span class="string">&#x27;server&#x27;</span>] = get_host_ip() <span class="comment"># &lt;--- 添加实时ip地址.</span></span><br><span class="line"></span><br><span class="line">os.remove(filename)</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    json.dump(data, f, indent=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#读取json 获取端口/密码/加密方式</span></span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;config.json&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = json.load(f)</span><br><span class="line">    a = data[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">    b = data[<span class="string">&#x27;server_port&#x27;</span>]</span><br><span class="line">    c = data[<span class="string">&#x27;method&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">runserver</span>():</span></span><br><span class="line">    os.system(<span class="string">&#x27;shadowsocks-server.bat&#x27;</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">talk</span>():</span></span><br><span class="line">    tkinter.messagebox.showinfo(<span class="string">&quot;提示&quot;</span>,<span class="string">&quot;你的ip地址是&quot;</span> + get_host_ip()+<span class="string">&quot;\n你的端口号是&quot;</span>+<span class="built_in">str</span>(b)+<span class="string">&quot;\n你的密码是&quot;</span> + a + <span class="string">&quot;\n加密方式是&quot;</span>+ c +<span class="string">&quot;\n请勿关闭cmd窗口&quot;</span>)</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="comment">#主程序</span></span><br><span class="line">netopen = threading.Thread(target=runserver)<span class="comment">#, daemon=True)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    netopen.start()</span><br><span class="line">    <span class="keyword">if</span> netopen.is_alive() == <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#弹窗显示</span></span><br><span class="line">        talk()</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;欢迎&quot;</span>,<span class="string">&quot;开启成功,如需退出请关闭cmd窗口&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span>  netopen.is_alive() == <span class="literal">False</span>:</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;退出&quot;</span>,<span class="string">&quot;服务已退出，请检查配置&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>逻辑还是比较简单的，基本就是在调用不同的组件，但是成品还是很不错的，大大降低了学习和使用成本。</p>
+<h2 id="最后想说的话"><a href="#最后想说的话" class="headerlink" title="最后想说的话"></a>最后想说的话</h2><p>这个方法对于校园网来说只能算是另辟蹊径，并没有完全从根本上解决问题，如果天翼校园的客户端能写得好一点，连接设备数能放宽一点，想必会受到更多学生的接纳。see you next time！欢迎评论！</p>
+
+  
+  
+    
+    <div class='footer'>
+      
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p>博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</p>
+
+              
+            
+              
+                <p>本文永久链接是：<a href=http://laixinly.top/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/>http://laixinly.top/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/</a></p>
+              
+            
+          </blockquote>
+        </div>
+      
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-03-31T01:06:15+08:00">
+  <a class='notlink'>
+    <i class="fas fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2021年3月31日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/python/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>python</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>服务器</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/SS/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>SS</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%A0%A1%E5%9B%AD%E7%BD%91/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>校园网</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%BD%91%E7%BB%9C/" rel="nofollow"><i class="fas fa-hashtag fa-fw" aria-hidden="true"></i><p>网络</p></a></div>
+
+
+        
+      
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+      
+        <a class='next' href='/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/'>
+          <p class='title'>在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <p class='content'>前言​        在搭载M1芯片的mac上顺利进行开发是一件不仅随缘而且需要人品的事情，不仅仅因为M1芯片的ARM架构所带来的编译方式的不同，bugsur新的文件路径系统以及时不时的抽风也使...</p>
+        </a>
+      
+    </div>
+  
+</article>
+
+
+  
+
+  <article class="post white-box reveal shadow" id="comments">
+    <p ct><i class='fas fa-comments'></i> 评论</p>
+    
+    <div id="valine_container" class="valine_thread">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+</div>
+
+  </article>
+
+
+
+
+
+
 </div>
 <aside class='l_side'>
   
@@ -693,11 +922,26 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 
 
+  <section class="widget toc-wrapper shadow floatable desktop mobile" id="toc-div" >
+    
+  <header>
+    
+      <i class="fas fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="toc-text">实现效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86%E4%B8%8E%E6%94%B9%E8%BF%9B"><span class="toc-text">原理与改进</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#windows%E5%BC%80%E5%90%AF%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-text">windows开启服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ios%E4%BD%BF%E7%94%A8%E5%B0%8F%E7%81%AB%E7%AE%AD%E8%BF%9E%E6%8E%A5"><span class="toc-text">ios使用小火箭连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macos%E4%BD%BF%E7%94%A8surge%E8%BF%9E%E6%8E%A5"><span class="toc-text">macos使用surge连接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%BC%96%E5%86%99"><span class="toc-text">程序编写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96ip%E5%9C%B0%E5%9D%80"><span class="toc-text">获取ip地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86ip%E5%9C%B0%E5%9D%80%E5%86%99%E5%85%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">将ip地址写入配置文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="toc-text">读取基础配置信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%B9%E7%AA%97"><span class="toc-text">弹窗</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E7%A8%8B%E5%BA%8F"><span class="toc-text">主程序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90"><span class="toc-text">大功告成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E%E6%83%B3%E8%AF%B4%E7%9A%84%E8%AF%9D"><span class="toc-text">最后想说的话</span></a></li></ol>
+    </div>
+  </section>
+
 
   
 
 
 </aside>
+
 
 
 		  
@@ -706,8 +950,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <script>
   window.pdata={}
-  pdata.ispage=false;
-  pdata.postTitle="";
+  pdata.ispage=true;
+  pdata.postTitle="利用python写一个自动获取局域网ip地址并开启SS服务器的小工具";
   pdata.commentPath="";
   pdata.commentPlaceholder="";
   // header 这里无论是否开启pjax都需要
