@@ -108,7 +108,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur " style='opacity: 0' >
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -587,7 +587,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper post search' style="display: ;">
+        <div id="full" class='cover-wrapper post search' style="display: none;">
           
             <div id='cover-backstretch'></div>
           
@@ -786,17 +786,17 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <h2 id="原理与改进"><a href="#原理与改进" class="headerlink" title="原理与改进"></a>原理与改进</h2><p>开启SS代理服务器部分参考了GitHub上的<a target="_blank" rel="noopener" href="https://github.com/shadowsocks/libQtShadowsocks">shadowsocks-libqss</a>项目，需要使用者手动填写config文件，使用起来学习成本有一点高，且如果没有成功运行也没有错误提示，所以使用python编写一个小脚本改进一下，以达到上述的功能。</p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="windows开启服务器"><a href="#windows开启服务器" class="headerlink" title="windows开启服务器"></a>windows开启服务器</h3><p>想开启SS代理服务器十分简单，如果不想更改默认的端口、密码、加密方式，可以直接双击使用<span class='p green'>开启SS代理服务器.exe</span>，打开后根据弹窗配置自己的代理软件，安卓小飞机，苹果小火箭，windows使用clash，macOS使用surge。</p>
 <p>一切顺利后应该是这样的界面</p>
-<p><img src="https://7.dusays.com/2021/03/30/f64bfa25f2650.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/30/f64bfa25f2650.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WechatIMG60.png"></p>
+<p><img src="https://7.dusays.com/2021/03/30/f64bfa25f2650.png" alt="WechatIMG60.png"></p>
 <h3 id="ios使用小火箭连接"><a href="#ios使用小火箭连接" class="headerlink" title="ios使用小火箭连接"></a>ios使用小火箭连接</h3><p>在小火箭中点击右上角加号，类型选择Shadowsocks，根据配置弹窗中的信息，填入相关配置，混淆与插件为空。如图:</p>
-<img src="https://7.dusays.com/2021/03/31/ca402d804ae31.jpeg" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/ca402d804ae31.jpeg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="IMG_42143F5BF2D2-1.jpeg" style="zoom:33%;" />
+<img src="https://7.dusays.com/2021/03/31/ca402d804ae31.jpeg" alt="IMG_42143F5BF2D2-1.jpeg" style="zoom:33%;" />
 
 <h3 id="macos使用surge连接"><a href="#macos使用surge连接" class="headerlink" title="macos使用surge连接"></a>macos使用surge连接</h3><p>打开surge面板，在策略中选择添加</p>
-<img src="https://7.dusays.com/2021/03/31/08eb650532af2.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/08eb650532af2.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.43.35.png" style="zoom: 67%;" />
+<img src="https://7.dusays.com/2021/03/31/08eb650532af2.png" alt="截屏2021-03-31 上午12.43.35.png" style="zoom: 67%;" />
 
 <p>填入配置信息，出站选择全局代理即可</p>
-<img src="https://7.dusays.com/2021/03/31/3d70095069d6d.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/3d70095069d6d.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.44.03.png" style="zoom:67%;" />
+<img src="https://7.dusays.com/2021/03/31/3d70095069d6d.png" alt="截屏2021-03-31 上午12.44.03.png" style="zoom:67%;" />
 
-<p><img src="https://7.dusays.com/2021/03/31/42ed00a2d751b.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/42ed00a2d751b.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.46.18.png"></p>
+<p><img src="https://7.dusays.com/2021/03/31/42ed00a2d751b.png" alt="截屏2021-03-31 上午12.46.18.png"></p>
 <p>surge教程到此结束</p>
 <h2 id="程序编写"><a href="#程序编写" class="headerlink" title="程序编写"></a>程序编写</h2><p>我们的目标其实很简单，就是获取当前IP地址并且写入到config文件中，并在启动服务器时有弹窗包含主要配置信息提醒用户。</p>
 <h3 id="获取ip地址"><a href="#获取ip地址" class="headerlink" title="获取ip地址"></a>获取ip地址</h3><p>这是一个很通用的获取本机局域网ip地址的方法，代码如下:</p>
@@ -813,7 +813,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">talk</span>():</span></span><br><span class="line">    tkinter.messagebox.showinfo(<span class="string">&quot;提示&quot;</span>,<span class="string">&quot;你的ip地址是&quot;</span> + get_host_ip()+<span class="string">&quot;\n你的端口号是&quot;</span>+<span class="built_in">str</span>(b)+<span class="string">&quot;\n你的密码是&quot;</span> + a + <span class="string">&quot;\n加密方式是&quot;</span>+ c +<span class="string">&quot;\n请勿关闭cmd窗口&quot;</span>)</span><br></pre></td></tr></table></figure>
 
 <p>实现界面如图</p>
-<img src="https://7.dusays.com/2021/03/31/02c5215d1e3e8.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/02c5215d1e3e8.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.39.39.png" style="zoom:50%;" />
+<img src="https://7.dusays.com/2021/03/31/02c5215d1e3e8.png" alt="截屏2021-03-31 上午12.39.39.png" style="zoom:50%;" />
 
 <h3 id="主程序"><a href="#主程序" class="headerlink" title="主程序"></a>主程序</h3><p>基本的小组件都写好了我们最后就把积木拼成小车车🚗就可以了,加入检测是否运行成功的弹窗，代码如下:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#主程序</span></span><br><span class="line">netopen = threading.Thread(target=runserver)<span class="comment">#, daemon=True)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    netopen.start()</span><br><span class="line">    <span class="keyword">if</span> netopen.is_alive() == <span class="literal">True</span>:</span><br><span class="line">        <span class="comment">#弹窗显示</span></span><br><span class="line">        talk()</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;欢迎&quot;</span>,<span class="string">&quot;开启成功,如需退出请关闭cmd窗口&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span>  netopen.is_alive() == <span class="literal">False</span>:</span><br><span class="line">        tkinter.messagebox.showinfo(<span class="string">&quot;退出&quot;</span>,<span class="string">&quot;服务已退出，请检查配置&quot;</span>)</span><br><span class="line"></span><br><span class="line">    </span><br></pre></td></tr></table></figure>
@@ -886,6 +886,11 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class="prev-next">
       
+        <a class='prev' href='/2021/03/31/%E5%8A%A0%E9%80%9F%E5%8D%9A%E5%AE%A2%E8%AE%BF%E9%97%AE%E9%80%9F%E5%BA%A6/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i></p>
+          <p class='content'></p>
+        </a>
+      
       
         <a class='next' href='/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/'>
           <p class='title'>在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
@@ -957,14 +962,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.remove("show");
+  l_header.classList.add("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="half";
-    cover_wrapper.style.display="";
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
     
   
 </script>
@@ -1461,33 +1466,6 @@ var loadCSS = function( href, before, media, attributes ){
   },"IssuesJS")
 </script>
 
-
-
-  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
-<script>
-  // https://www.npmjs.com/package/vanilla-lazyload
-  // Set the options globally
-  // to make LazyLoad self-initialize
-  window.lazyLoadOptions = {
-    elements_selector: ".lazyload",
-    threshold: 0
-  };
-  // Listen to the initialization event
-  // and get the instance of LazyLoad
-  window.addEventListener(
-    "LazyLoad::Initialized",
-    function (event) {
-      window.lazyLoadInstance = event.detail.instance;
-    },
-    false
-  );
-  document.addEventListener('DOMContentLoaded', function () {
-    lazyLoadInstance.update();
-  });
-  document.addEventListener('pjax:complete', function () {
-    lazyLoadInstance.update();
-  });
-</script>
 
 
 

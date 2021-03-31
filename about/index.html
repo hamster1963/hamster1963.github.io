@@ -104,7 +104,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur " style='opacity: 0' >
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -583,7 +583,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper docs search' style="display: ;">
+        <div id="full" class='cover-wrapper docs search' style="display: none;">
           
             <div id='cover-backstretch'></div>
           
@@ -676,7 +676,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
   <div class="note quote"><p>关于我 关于我 你知道什么 –《关于我》</p></div>
 
-<div class="tabs" id="tab-id"><ul class="nav-tabs"><li class="tab active"><a class="#tab-id-1">>-<</a></li><li class="tab"><a class="#tab-id-2">关于我</a></li><li class="tab"><a class="#tab-id-3">建站史</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-id-1"><p><span class='p center logo large green'>你好鸭！</span><br><img src="https://7.dusays.com/2021/03/31/6e11d72603112.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/6e11d72603112.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="></p>
+<div class="tabs" id="tab-id"><ul class="nav-tabs"><li class="tab active"><a class="#tab-id-1">>-<</a></li><li class="tab"><a class="#tab-id-2">关于我</a></li><li class="tab"><a class="#tab-id-3">建站史</a></li></ul><div class="tab-content"><div class="tab-pane active" id="tab-id-1"><p><span class='p center logo large green'>你好鸭！</span><br><img src="https://7.dusays.com/2021/03/31/6e11d72603112.png"></p>
 <div class="note info"><p>此网页使用hexo搭建，主题为Volantis</p></div>
 <div class="note link green"><p>全站使用GitHub+Coding+Vercel保证访问速度</p></div>
 <div class="note success"><p>如果可以的话留个言吧！每一条我都会认真回复的！</p></div></div><div class="tab-pane" id="tab-id-2"><div class="note "><p><strong>我是谁</strong></p><div class="note done"><div class='checkbox green checked'><input type="checkbox" checked="checked"/>            <p>正在等待20岁生日的伪文艺青年</p>            </div><div class='checkbox green checked'><input type="checkbox" checked="checked"/>            <p>坐标南方</p>            </div><div class='checkbox green checked'><input type="checkbox" checked="checked"/>            <p>爱好吉他和听别人弹吉他</p>            </div></div><div class="note danger"><div class='checkbox times red checked'><input type="checkbox" checked="checked"/>            <p>对数学感到头疼但仍在吃力挣扎</p>            </div><div class='checkbox times red checked'><input type="checkbox" checked="checked"/>            <p>穷</p>            </div><div class='checkbox times red checked'><input type="checkbox" checked="checked"/>            <p>不吃香菜和大葱，吃了可能会见上帝（逃</p>            </div></div></div></div><div class="tab-pane" id="tab-id-3"><div class="timeline">
@@ -890,7 +890,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       
         <div class="webinfo-item">
           <div>文章数目：</div>
-          <div>2 篇</div>
+          <div>3 篇</div>
         </div>
       
 
@@ -938,7 +938,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Wed Mar 31 2021 17:28:33 GMT+0800 (中国标准时间)</div>
+            <div id="last-update" style="display: none;">Wed Mar 31 2021 23:35:55 GMT+0800 (中国标准时间)</div>
             <div id="last-update-show">2021-03-31 日</div>
           
         </div>
@@ -1041,14 +1041,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.remove("show");
+  l_header.classList.add("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="half";
-    cover_wrapper.style.display="";
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
     
   
 </script>
@@ -1545,33 +1545,6 @@ var loadCSS = function( href, before, media, attributes ){
   },"IssuesJS")
 </script>
 
-
-
-  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
-<script>
-  // https://www.npmjs.com/package/vanilla-lazyload
-  // Set the options globally
-  // to make LazyLoad self-initialize
-  window.lazyLoadOptions = {
-    elements_selector: ".lazyload",
-    threshold: 0
-  };
-  // Listen to the initialization event
-  // and get the instance of LazyLoad
-  window.addEventListener(
-    "LazyLoad::Initialized",
-    function (event) {
-      window.lazyLoadInstance = event.detail.instance;
-    },
-    false
-  );
-  document.addEventListener('DOMContentLoaded', function () {
-    lazyLoadInstance.update();
-  });
-  document.addEventListener('pjax:complete', function () {
-    lazyLoadInstance.update();
-  });
-</script>
 
 
 

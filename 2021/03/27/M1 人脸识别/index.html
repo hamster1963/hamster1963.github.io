@@ -108,7 +108,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   <body>
     
 
-<header id="l_header" class="l_header auto shadow blur " style='opacity: 0' >
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
   <div class='container'>
   <div id='wrapper'>
     <div class='nav-sub'>
@@ -587,7 +587,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
       <div id="l_cover">
   
     
-        <div id="half" class='cover-wrapper post search' style="display: ;">
+        <div id="full" class='cover-wrapper post search' style="display: none;">
           
             <div id='cover-backstretch'></div>
           
@@ -771,7 +771,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <p>在<strong>export no_proxy</strong>与<strong>export http_proxy</strong>填入对应的本地代理服务器地址以及端口</p>
 <p>可以在你的代理软件中查看</p>
-<p><img src="https://7.dusays.com/2021/03/31/6d9186b64147c.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/6d9186b64147c.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午12.42.42.png"></p>
+<p><img src="https://7.dusays.com/2021/03/31/6d9186b64147c.png" alt="截屏2021-03-31 上午12.42.42.png"></p>
 <p>将文件配置好并放在用户根目录后</p>
 <h3 id="当让终端走代理的时候，输入："><a href="#当让终端走代理的时候，输入：" class="headerlink" title="当让终端走代理的时候，输入："></a>当让终端走代理的时候，输入：</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source  ~&#x2F;.bash_profile</span><br><span class="line">proxy_on</span><br></pre></td></tr></table></figure>
 
@@ -838,7 +838,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <h3 id="安装miniforge"><a href="#安装miniforge" class="headerlink" title="安装miniforge"></a>安装miniforge</h3><div class="note radiation yellow"><p>鉴于M1版本的开发工具适配进程目前并不同步，所以这里使用miniforge来进行库管理</p></div>
 
 <p>在网站中选择Apple Silicon版本下载，下载后直接运行即可</p>
-<img src="https://7.dusays.com/2021/03/28/539b13f9168dc.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/539b13f9168dc.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" width="50%">
+<img src="https://7.dusays.com/2021/03/28/539b13f9168dc.png" width="50%">
 
 <p>接下来我们需要在终端中激活</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda create -n myenv python&#x3D;3.9 &#x2F;&#x2F;创建名为myenv，python版本为3.9的环境</span><br><span class="line">conda activate myenv &#x2F;&#x2F;激活环境</span><br></pre></td></tr></table></figure>
@@ -935,7 +935,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 
 <p>如果没有报错证明万里长征我们已经走了一半了。</p>
 <p>也可以使用 pip3 list 命令来查看所有已经安装的库 如图</p>
-<p><img src="https://7.dusays.com/2021/03/31/8ea1179e77d14.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/31/8ea1179e77d14.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="截屏2021-03-31 上午1.05.28.png"></p>
+<p><img src="https://7.dusays.com/2021/03/31/8ea1179e77d14.png" alt="截屏2021-03-31 上午1.05.28.png"></p>
 <p>到此安装告一段落</p>
 <h1 id="第二部分-开始造轮子吧"><a href="#第二部分-开始造轮子吧" class="headerlink" title="第二部分  开始造轮子吧"></a>第二部分  开始造轮子吧</h1><p>由于安装这些依赖和库可能已经损耗你的大部分精力了，</p>
 <p>所以接下来我们就快速地来看看怎么把这个简单的实时人脸识别跑起来吧。</p>
@@ -947,16 +947,16 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Load a sample picture and learn how to recognize it.</span></span><br><span class="line"></span><br><span class="line">图片人名1_image = face_recognition.load_image_file(<span class="string">&quot;把这里改成你要识别的图片的路径&quot;</span>)   </span><br><span class="line"></span><br><span class="line">图片人名1_face_encoding = face_recognition.face_encodings(图片人名1_image)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># Load a second sample picture and learn how to recognize it.</span></span><br><span class="line"></span><br><span class="line">图片人名2_image = face_recognition.load_image_file(<span class="string">&quot;把这里改成你要识别的图片2的路径&quot;</span>)</span><br><span class="line"></span><br><span class="line">图片人名2_face_encoding = face_recognition.face_encodings(图片人名1_image)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Create arrays of known face encodings and their names</span></span><br><span class="line">known_face_encodings = [</span><br><span class="line">    图片人名1_face_encoding,</span><br><span class="line">    图片人名2_face_encoding</span><br><span class="line">]</span><br><span class="line">known_face_names = [</span><br><span class="line">    <span class="string">&quot;图片1所对应的全名&quot;</span>,</span><br><span class="line">    <span class="string">&quot;图片2所对应的全名&quot;</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>如图，图片1为Obama，图片2为biden</p>
-<img src="https://7.dusays.com/2021/03/28/b642e2e47dca0.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/b642e2e47dca0.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WX20210328-193809@2x.png"  />
+<img src="https://7.dusays.com/2021/03/28/b642e2e47dca0.png" alt="WX20210328-193809@2x.png"  />
 
 <h3 id="运行一下吧！"><a href="#运行一下吧！" class="headerlink" title="运行一下吧！"></a>运行一下吧！</h3><p>打开终端，输入</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 &lt;将文件拖到这里或者粘贴文件的路径&gt;</span><br></pre></td></tr></table></figure>
 
 <p>就像这样</p>
-<p><img src="https://7.dusays.com/2021/03/28/5a801ee53b557.png" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/5a801ee53b557.png" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="WX20210328-195510@2x.png"> </p>
+<p><img src="https://7.dusays.com/2021/03/28/5a801ee53b557.png" alt="WX20210328-195510@2x.png"> </p>
 <p>按下回车等待奇迹的发生</p>
 <p>不出意外的话，掏出你的小手机拿出一张照片或者把你的脸对准摄像头，就可以看到</p>
-<img src="https://7.dusays.com/2021/03/28/99aa9b9988185.jpg" class="lazyload" data-srcset="https://7.dusays.com/2021/03/28/99aa9b9988185.jpg" srcset="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" alt="521616932197_.pic_hd.jpg" style="zoom:60%;" />
+<img src="https://7.dusays.com/2021/03/28/99aa9b9988185.jpg" alt="521616932197_.pic_hd.jpg" style="zoom:60%;" />
 
 <h2 id="大功告成啦！"><a href="#大功告成啦！" class="headerlink" title="大功告成啦！"></a>大功告成啦！</h2><h1 id="尾巴"><a href="#尾巴" class="headerlink" title="尾巴"></a>尾巴</h1><p>总体来说跑起这个小项目还是基本没有难度的，最主要的是有稳定的网络以及足够的耐心</p>
 <p>face_recognition这个库具有很多方向的应用，今天只是简单地入门一下，还有很多玩法可以发掘哦！</p>
@@ -1092,14 +1092,14 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   // header 这里无论是否开启pjax都需要
   var l_header=document.getElementById("l_header");
   
-  l_header.classList.remove("show");
+  l_header.classList.add("show");
   
   
     // cover
     var cover_wrapper=document.querySelector('.cover-wrapper');
     
-    cover_wrapper.id="half";
-    cover_wrapper.style.display="";
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
     
   
 </script>
@@ -1596,33 +1596,6 @@ var loadCSS = function( href, before, media, attributes ){
   },"IssuesJS")
 </script>
 
-
-
-  <script defer src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
-<script>
-  // https://www.npmjs.com/package/vanilla-lazyload
-  // Set the options globally
-  // to make LazyLoad self-initialize
-  window.lazyLoadOptions = {
-    elements_selector: ".lazyload",
-    threshold: 0
-  };
-  // Listen to the initialization event
-  // and get the instance of LazyLoad
-  window.addEventListener(
-    "LazyLoad::Initialized",
-    function (event) {
-      window.lazyLoadInstance = event.detail.instance;
-    },
-    false
-  );
-  document.addEventListener('DOMContentLoaded', function () {
-    lazyLoadInstance.update();
-  });
-  document.addEventListener('pjax:complete', function () {
-    lazyLoadInstance.update();
-  });
-</script>
 
 
 
