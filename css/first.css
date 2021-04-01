@@ -484,8 +484,10 @@ th {
   bottom: 100px;
   text-align: center;
   cursor: pointer;
+  display: none;
 }
 .cover-wrapper #scroll-down .scroll-down-effects {
+  display: none;
   color: #fff;
   font-size: 24px;
   line-height: 64px;
