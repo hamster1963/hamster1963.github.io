@@ -845,6 +845,16 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
   
     <div class="prev-next">
       
+        <a class='prev' href='/2021/04/06/%E9%9F%B3%E4%B9%90%E5%88%86%E4%BA%AB/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>关于音乐的推荐</p>
+          <p class='content'>前言 Hello大家好!!!这是我第一次尝试写下关于音乐分享的文章，很不成熟也很可能味如嚼蜡，谢谢您的谅解！！
+推荐歌单仅仅是个人喜好哦！
+
+全部歌曲都可以直接点击播放
+
+关于我喜欢的音乐风格小...</p>
+        </a>
+      
       
         <a class='next' href='/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/'>
           <p class='title'>利用python写一个自动获取局域网ip地址并开启SS服务器的小工具<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
@@ -935,54 +945,15 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
     <br><br>
     
       
-        <div class="aplayer-container">
-          
-
-
-        </div>
-      
-    
-      
-        <br>
-        <div class="social-wrapper">
-          
-            
-          
-            
-          
-            
-          
-        </div>
-      
-    
-      
-        <div><p>博客内容遵循 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议</a></p>
-</div>
-      
-    
-      
         
-          <div><p><span id="lc-sv">本站总访问量为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 次</span> <span id="lc-uv">访客数为 <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 人</span></p>
-</div>
-        
-      
-    
-      
-        本站使用
-        <a href="https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1" target="_blank" class="codename">Volantis</a>
-        作为主题
-      
-    
-      
-        
-          <div><p>全站使用GitHub+Coding+Vercel加速，保证访问速度</p>
+          <div><p>全站使用 GitHub &amp; Vercel 加速</p>
 </div>
         
       
     
       
         <div class='copyright'>
-        <p><a href="/">Copyright © 2017-2021 廖来新</a></p>
+        <p><a href="/">Copyright © 2017-2021 仓鼠</a></p>
 
         </div>
       
@@ -1492,6 +1463,28 @@ var loadCSS = function( href, before, media, attributes ){
 
 
 
+
+
+  <script>
+  let APlayerController = new Object();
+  APlayerController.id = '3175833810';  // 设定全局音乐播放ID
+  APlayerController.volume = '0.7';
+  loadCSS("https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css", window.volantis.loadcss);
+  // APlayer 需要在  MetingJS 之前加载
+  loadScript("https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.js")
+  window.volantis.APlayerLoaded=0 // APlayer加载完成状态
+  var checkAPlayer = setInterval(function () {
+    if (!window.APlayer) return // APlayer加载完成？
+	  if ($("#safearea").css("display")!="block") return // 文章内容加载完成？ see: source/css/first.styl
+    clearInterval(checkAPlayer)
+	  if (!window.volantis.APlayerLoaded&&!window.MetingJSElement){ // APlayer只能加载一次
+      window.volantis.APlayerLoaded=1 // APlayer加载完成
+      loadScript("https://cdn.jsdelivr.net/npm/meting@2.0/dist/Meting.min.js") // 加载 MetingJS
+	  }
+  }, 2500) // 按照网速调节差分2.5s
+  // rightmenu see: layout/_partial/rightmenu.ejs
+
+</script>
 
 
 
