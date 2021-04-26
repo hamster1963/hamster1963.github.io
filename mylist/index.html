@@ -52,7 +52,56 @@
   <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
   
 
-  <script id="loadcss"></script>
+  <script id="loadcss">
+    var ConsoleManager={
+     onOpen:function(){
+         alert("Console is opened")
+     },
+     onClose:function(){
+         alert("Console is closed")
+     },
+     init:function(){
+         var self = this;
+         var x = document.createElement('div');
+         var isOpening = false,isOpened=false;
+         Object.defineProperty(x, 'id', {
+             get:function(){
+                 if(!isOpening){
+                     self.onOpen();
+                     isOpening=true;
+                 }
+                 isOpened=true;
+             }
+         });
+         setInterval(function(){
+             isOpened=false;
+             console.info(x);
+             console.clear();
+             if(!isOpened && isOpening){
+                 self.onClose();
+                 isOpening=false;
+             }
+         },200)
+     }
+    }
+    ConsoleManager.onOpen = function(){
+        //打开控制台，跳转到百度
+        try{
+            window.open('about:blank',target='_self');
+        }catch(err){
+            var a = document.createElement("button");
+                a.onclick=function(){
+                window.open('blank',target='_self');
+            }
+            a.click();  
+        }
+    }
+    ConsoleManager.onClose = function(){
+        alert("不要看我源码!!!!!")
+    }
+    ConsoleManager.init();
+  </script>
+
 
   
 <script>
@@ -959,8 +1008,8 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
         <div class="webinfo-item">
           <div>最后活动时间：</div>
           
-            <div id="last-update" style="display: none;">Fri Apr 23 2021 16:47:47 GMT+0800 (中国标准时间)</div>
-            <div id="last-update-show">2021-04-23 日</div>
+            <div id="last-update" style="display: none;">Mon Apr 26 2021 21:34:31 GMT+0800 (中国标准时间)</div>
+            <div id="last-update-show">2021-04-26 日</div>
           
         </div>
         
@@ -1010,7 +1059,7 @@ if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMo
           try {
             document.getElementById('last-update-show').innerHTML = timeago(new Date(lastUpDate));
           } catch (error) {
-            document.getElementById('last-update-show').innerHTML = '2021-04-23 日';
+            document.getElementById('last-update-show').innerHTML = '2021-04-26 日';
           }
         </script>
         
