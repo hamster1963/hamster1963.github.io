@@ -130,62 +130,10 @@
 
       
 
-  
-
-
-  <div class='nav-wrap mobile-hidden'>
-  <nav class='sub post cap'>
-    
-      <a href='/'>近期发布</a>
-    
-    
-      
-        <a href='/categories'>分类</a>
-      
-    
-    
-      
-        <a class='active' href='/tags'>标签：SS</a>
-      
-    
-    
-      
-        <a href='/archives'>归档</a>
-      
-    
-  </nav>
-</div>
-
-  <div class="post-list post"><a class="post-card post article" href="/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/"><article class="excerpt md">
-
-  <div class='post-cover'>
-    <img src='https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210517094512.png'/>
-  </div>
-
-<h2 class="post-title">
-  利用python写一个自动获取局域网ip地址并开启SS服务器的小工具
-</h2>
-<div class='excerpt'>
-  
-    <p>通过搭建简易SS服务器绕过校园网单设备限制</p>
-  
-</div>
-<div class='meta cap'>
-  <span class='cap' id='post-meta'>
-    发布于&nbsp;<time datetime='2021-03-30T02:29:32.648Z'>2021-03-30</time>
-  </span>
-  
-    
-      
-      <span class="cap breadcrumb">python开发</span>
-    
-  
-  
-</div>
-</article></a></div>
-  
-
-
+  @import 'partial/*'
+@import 'tag-plugins/*'
+@import 'sidebar/*'
+@import 'pages/*'
 
 
 
@@ -336,6 +284,33 @@
 
 
 <!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
+  }
+  utterances();
+</script>
+
 
 
 
