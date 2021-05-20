@@ -17,12 +17,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>今日校园自动填写辅导员信息脚本 - 仓鼠杂货铺</title>
+  <title>今日校园自动填写表单信息脚本 - 仓鼠杂货铺</title>
 
   
     <meta name="description" content="懒人必备">
 <meta property="og:type" content="article">
-<meta property="og:title" content="今日校园自动填写辅导员信息脚本">
+<meta property="og:title" content="今日校园自动填写表单信息脚本">
 <meta property="og:url" content="http://laixinly.top/2021/05/20/%E4%BB%8A%E6%97%A5%E6%A0%A1%E5%9B%AD%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%86%99%E8%BE%85%E5%AF%BC%E5%91%98%E4%BF%A1%E6%81%AF%E8%84%9A%E6%9C%AC/index.html">
 <meta property="og:site_name" content="仓鼠杂货铺">
 <meta property="og:description" content="懒人必备">
@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520111708.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520112459.png">
 <meta property="article:published_time" content="2021-05-20T02:55:53.187Z">
-<meta property="article:modified_time" content="2021-05-20T03:29:14.685Z">
+<meta property="article:modified_time" content="2021-05-20T03:31:28.788Z">
 <meta property="article:author" content="Hamster">
 <meta property="article:tag" content="python，网络">
 <meta name="twitter:card" content="summary_large_image">
@@ -86,7 +86,7 @@
     
       
       
-<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%B4%E8%B0%A2"><span class="toc-text">致谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS"><span class="toc-text">macOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8"><span class="toc-text">第一次使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E8%BF%90%E8%A1%8C"><span class="toc-text">正式运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E5%91%8A"><span class="toc-text">警告</span></a></li></ol></div></div></div>
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%B4%E8%B0%A2"><span class="toc-text">致谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS"><span class="toc-text">macOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8"><span class="toc-text">第一次使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E8%BF%90%E8%A1%8C"><span class="toc-text">正式运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E5%91%8A"><span class="toc-text">警告</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80"><span class="toc-text">文件下载地址</span></a></li></ol></div></div></div>
 
     
   
@@ -120,7 +120,7 @@
 
 
 <article class='content md post'>
-<h1 class="article-title"><span>今日校园自动填写辅导员信息脚本</span></h1>
+<h1 class="article-title"><span>今日校园自动填写表单信息脚本</span></h1>
 <h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>感谢<a target="_blank" rel="noopener" href="https://gitee.com/Finch1"><strong>Finch</strong></a>、<a target="_blank" rel="noopener" href="https://gitee.com/lemofire"><strong>柠火</strong></a>提供的方法与思路。</p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>在windows系统下，下载压缩包，在文件夹内部按住shift并单击右键，选择<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520110704.png" alt="image-20210520110701674" style="zoom:50%;" /></p>
 <p>在命令行中输入</p>
@@ -160,6 +160,7 @@
 <p>如果是今天的第一次填写，将会返还”SUCCESS”</p>
 <p>如果已经填写，将会返还”该收集已填写无需再次填写”</p>
 <h2 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h2><p>此程序仅供学习，请勿用于违法途径。</p>
+<h2 id="文件下载地址"><a href="#文件下载地址" class="headerlink" title="文件下载地址"></a>文件下载地址</h2><p>由于法律与政策，下载地址不予显示。</p>
 
 
 <div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
