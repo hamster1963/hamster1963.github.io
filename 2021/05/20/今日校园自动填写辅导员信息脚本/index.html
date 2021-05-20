@@ -4,7 +4,7 @@
 <head>
   <meta name="generator" content="Hexo 5.4.0">
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,follow">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
@@ -17,18 +17,25 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>标签：face_recognition - 仓鼠杂货铺</title>
+  <title>今日校园自动填写辅导员信息脚本 - 仓鼠杂货铺</title>
 
   
-    <meta name="description" content="sec place">
-<meta property="og:type" content="website">
-<meta property="og:title" content="仓鼠杂货铺">
-<meta property="og:url" content="http://laixinly.top/tags/face-recognition/index.html">
+    <meta name="description" content="懒人必备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="今日校园自动填写辅导员信息脚本">
+<meta property="og:url" content="http://laixinly.top/2021/05/20/%E4%BB%8A%E6%97%A5%E6%A0%A1%E5%9B%AD%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%86%99%E8%BE%85%E5%AF%BC%E5%91%98%E4%BF%A1%E6%81%AF%E8%84%9A%E6%9C%AC/index.html">
 <meta property="og:site_name" content="仓鼠杂货铺">
-<meta property="og:description" content="sec place">
+<meta property="og:description" content="懒人必备">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520110704.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520111708.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520112459.png">
+<meta property="article:published_time" content="2021-05-20T02:55:53.187Z">
+<meta property="article:modified_time" content="2021-05-20T03:29:14.685Z">
 <meta property="article:author" content="Hamster">
-<meta name="twitter:card" content="summary">
+<meta property="article:tag" content="python，网络">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520110704.png">
   
   
 
@@ -78,24 +85,8 @@
   
     
       
-      <div class='widget-wrap' id='markdown'>
-  <div class='widget-header h4 dis-select'>
-    <span class='name'>欢迎</span>
-  </div>
-  <div class='widget-body fs14'>
-    
-      <p>欢迎光临仓鼠杂货铺。</p>
-
-    
-  </div>
-</div>
-
-    
-  
-    
       
-      
-<div class="widget-wrap" id="recent"><div class="widget-header h4 dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><div class="post-title reveal"><div class="cap"><time>2021-05-20</time></div><a href="/2021/05/20/%E4%BB%8A%E6%97%A5%E6%A0%A1%E5%9B%AD%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%86%99%E8%BE%85%E5%AF%BC%E5%91%98%E4%BF%A1%E6%81%AF%E8%84%9A%E6%9C%AC/">今日校园自动填写辅导员信息脚本</a></div><div class="post-title reveal"><div class="cap"><time>2021-05-17</time></div><a href="/2021/04/06/%E9%9F%B3%E4%B9%90%E5%88%86%E4%BA%AB/">关于音乐的分享</a></div><div class="post-title reveal"><div class="cap"><time>2021-05-17</time></div><a href="/2021/03/30/%E6%A0%A1%E5%9B%AD%E7%BD%91SS%E6%9C%8D%E5%8A%A1%E5%99%A8/">利用python写一个自动获取局域网ip地址并开启SS服务器的小工具</a></div><div class="post-title reveal"><div class="cap"><time>2021-05-17</time></div><a href="/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/">在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo</a></div><div class="post-title reveal"><div class="cap"><time>2021-05-17</time></div><a href="/2021/04/05/DDNSTO/">在openwrt上使用DDNSTO插件进行远程管理</a></div></div></div>
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%B4%E8%B0%A2"><span class="toc-text">致谢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-text">使用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#macOS"><span class="toc-text">macOS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E4%BD%BF%E7%94%A8"><span class="toc-text">第一次使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E8%BF%90%E8%A1%8C"><span class="toc-text">正式运行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AD%A6%E5%91%8A"><span class="toc-text">警告</span></a></li></ol></div></div></div>
 
     
   
@@ -103,89 +94,99 @@
 <footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://notion.laixinly.top" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://t.me/Notionso" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
+
+      
+
+
+  <div class='bread-nav fs12'>
   
-<header class='header mobile-only'>
-  <div class='logo-wrap'>
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/python%E5%BC%80%E5%8F%91/">python开发</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2021-05-20T02:55:53.187Z'>2021-05-20</time>
+    </div>
   
-    <a class='avatar' href='/about/'>
-      
-        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
-      
-      <img no-lazy class='avatar' src='https://7.dusays.com/2021/03/04/283201a4d5208.jpg'/>
-    </a>
-  
-  
-    <a class='title' href='/'>
-      仓鼠杂货铺
-    </a>
-  
-</div>
-
-  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
-</header>
-
-
-
-      
-
-  
-
-
-  <div class='nav-wrap mobile-hidden'>
-  <nav class='sub post cap'>
-    
-      <a href='/'>近期发布</a>
-    
-    
-      
-        <a href='/categories'>分类</a>
-      
-    
-    
-      
-        <a class='active' href='/tags'>标签：face_recognition</a>
-      
-    
-    
-      
-        <a href='/archives'>归档</a>
-      
-    
-  </nav>
-</div>
-
-  <div class="post-list post"><a class="post-card post article" href="/2021/03/27/M1%20%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB/"><article class="excerpt md">
-
-  <div class='post-cover'>
-    <img src='https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210517005931.png'/>
   </div>
 
-<h2 class="post-title">
-  在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo
-</h2>
-<div class='excerpt'>
-  
-    <p>使用M1芯片MacBook成功安装使用face_recognition的一点小教程</p>
-  
-</div>
-<div class='meta cap'>
-  <span class='cap' id='post-meta'>
-    发布于&nbsp;<time datetime='2021-03-27T14:47:55.207Z'>2021-03-27</time>
-  </span>
-  
-    
+
+<article class='content md post'>
+<h1 class="article-title"><span>今日校园自动填写辅导员信息脚本</span></h1>
+<h2 id="致谢"><a href="#致谢" class="headerlink" title="致谢"></a>致谢</h2><p>感谢<a target="_blank" rel="noopener" href="https://gitee.com/Finch1"><strong>Finch</strong></a>、<a target="_blank" rel="noopener" href="https://gitee.com/lemofire"><strong>柠火</strong></a>提供的方法与思路。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>在windows系统下，下载压缩包，在文件夹内部按住shift并单击右键，选择<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520110704.png" alt="image-20210520110701674" style="zoom:50%;" /></p>
+<p>在命令行中输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python3 DailyCp.py 学校全名 学号 密码 定位地址 formdb文件夹绝对路径</span><br></pre></td></tr></table></figure>
+
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python3 DailyCp.py xx大学 3****9 d***4 广*******路 &#x2F;Users&#x2F;*****&#x2F;Desktop&#x2F;Campus-master&#x2F;formdb</span><br></pre></td></tr></table></figure>
+
+<p>输入后回车即可。</p>
+<h3 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h3><p>在mac系统下首先打开终端，使用cd定位到Campus-master文件夹。</p>
+<p>在命令行中输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python3 DailyCp.py 学校全名 学号 密码 定位地址 formdb文件夹绝对路径</span><br></pre></td></tr></table></figure>
+
+<p>例如</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python3 DailyCp.py xx大学 3****9 d***4 广*******路 &#x2F;Users&#x2F;*****&#x2F;Desktop&#x2F;Campus-master&#x2F;formdb</span><br></pre></td></tr></table></figure>
+
+<p>输入后回车即可。</p>
+<h3 id="第一次使用"><a href="#第一次使用" class="headerlink" title="第一次使用"></a>第一次使用</h3><p>在第一次使用的时候会在屏幕上打印提醒</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">请手动填写&#x2F;Users&#x2F;***&#x2F;Desktop&#x2F;Campus-master&#x2F;formdb&#x2F;910e5efaed9eaea5f146faa60c3ab47a.json，之后重新运行脚本</span><br></pre></td></tr></table></figure>
+
+<p>在formdb文件夹中找到相对应的json文件，使用文本编辑器打开（推荐vscode），如果打开后发现数据都集中在一行，请单击右键单击</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520111708.png" alt="image-20210520110701674" style="zoom:67%;" />
+
+<p>填写规范请查看1129.json文件。</p>
+<p>主要修改的为select项，如果对应的为选中，则将其修改为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;isSelected&quot;: 1</span><br></pre></td></tr></table></figure>
+
+<p>反之则为</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;isSelected&quot;: null</span><br></pre></td></tr></table></figure>
+
+<p>注意是单选还是多选题，切勿在单选题中修改多项select值为1。</p>
+<h3 id="正式运行"><a href="#正式运行" class="headerlink" title="正式运行"></a>正式运行</h3><p>再次在命令行中输入上述命令</p>
+<p>等待程序运行，在正常情况下会首先打印学校名字及登录地址，并打印所需要填写的表单的基本信息，下一行会打印表单详细信息（你已经填写好的）。</p>
+<p>​                                                                                            <strong>数据已经脱敏</strong></p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/20210520112459.png" alt="image-20210520110701674" style="zoom:50%;" />
+
+<p>如果是今天的第一次填写，将会返还”SUCCESS”</p>
+<p>如果已经填写，将会返还”该收集已填写无需再次填写”</p>
+<h2 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h2><p>此程序仅供学习，请勿用于违法途径。</p>
+
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2021/04/06/%E9%9F%B3%E4%B9%90%E5%88%86%E4%BA%AB/">关于音乐的分享</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
       
-      <span class="cap breadcrumb">python开发</span>
-    
-  
-  
-</div>
-</article></a></div>
-  
 
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
 
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
 
 
 
