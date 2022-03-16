@@ -3066,6 +3066,9 @@ div.swiper-slide img {
   background: #fff !important;
   --swiper-theme-color: #ff5722 !important;
 }
+.reveal {
+  visibility: hidden;
+}
 .cmt-body.utterances {
   margin: 0 -4px;
 }

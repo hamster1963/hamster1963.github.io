@@ -126,7 +126,7 @@
   </div>
 
 
-<article class='content md post'>
+<article class='content md post reveal'>
 <h1 class="article-title"><span>在搭载M1芯片的mac上使用face_recognition库实现实时人脸识别小demo</span></h1>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>​        在搭载M1芯片的mac上顺利进行开发是一件不仅随缘而且需要人品的事情，不仅仅因为M1芯片的ARM架构所带来的编译方式的不同，bugsur新的文件路径系统以及时不时的抽风也使得顺利开发的路上艰难险阻。今天就来看看GitHub上大名鼎鼎的开源人脸库face_recognition如何比较顺利地在M1上跑起来且实现简单的实时人脸识别的功能。</p>
 <div class="tag-plugin note" color="red"><div class="body"><p>由于不可描述的原因，网络环境所造成的安装失败不在本文讨论范围中。</p></div></div>
@@ -453,8 +453,8 @@
   if ('true' == 'true') {
     stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
   }
-  if ('' == 'true') {
-    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
   }
   if ('true' == 'true') {
     stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
