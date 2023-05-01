@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>逆向破解登录获取360路由器信息 - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="一个有趣的加密破解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逆向破解登录获取360路由器信息">
+<meta property="og:url" content="https://xinyu.today/2023/04/29/%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96360%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BF%A1%E6%81%AF%20/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="一个有趣的加密破解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/lP21qpnfYciB8ku.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/qKLdOtjYf2nrNwJ.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/kSl9RNuyVEebhtM.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/hYjMGzbcuK3rn9F.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/dRaCTYcKXIGtn9e.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/uhJop1VMIiS2AHF.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/97WvGq3pLAVJyY8.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/p6kqYZRSTmeH5C7.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/CvOPTq6JdurMxmn.png">
+<meta property="og:image" content="https://s2.loli.net/2023/04/29/8x3N4wdiPZRpShO.png">
+<meta property="article:published_time" content="2023-04-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-04-29T10:12:19.371Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Router">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/04/29/lP21qpnfYciB8ku.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://120.24.211.49/20221102012153.png">
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://120.24.211.49/20221102011714.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BB%8B%E7%BB%8D"><span class="toc-text">项目介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E5%9C%B0%E5%9D%80"><span class="toc-text">项目地址</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="toc-text">实现效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E9%99%86%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-text">登陆过程分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%93%E5%8C%85"><span class="toc-text">抓包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%86%E5%90%91"><span class="toc-text">逆向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81%E5%B1%82%E7%BA%A7"><span class="toc-text">Go项目代码层级</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="http://memo.xinyu.today:580" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://chat.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/Go/">Go</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2023-04-28T16:00:00.000Z'>2023-04-29</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>逆向破解登录获取360路由器信息</span></h1>
+<h2 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h2><p>360路由器目前没有无损刷机的办法，获取ssh终端权限较为困难，如想获取路由器状态信息以及连接设备信息就比较困难，但可以通过采用逆向破解网页登陆的形式进行后台的登录进行信息获取。</p>
+<h2 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h2><p><a target="_blank" rel="noopener" href="https://github.com/hamster1963/360-router-data-retriever">https://github.com/hamster1963/360-router-data-retriever</a></p>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>采用代码进行360后台的登录，进行路由器信息的获取。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/lP21qpnfYciB8ku.png"></p>
+<h2 id="登陆过程分析"><a href="#登陆过程分析" class="headerlink" title="登陆过程分析"></a>登陆过程分析</h2><h3 id="抓包"><a href="#抓包" class="headerlink" title="抓包"></a>抓包</h3><p>直接采用Safari的开发者工具进行抓包。</p>
+<p>在输入框中输入管理员密码进行登录。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/qKLdOtjYf2nrNwJ.png" style="zoom:50%;" />
+
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/kSl9RNuyVEebhtM.png"></p>
+<p>可以看到页面首先请求了get_rand_key.cgi（CGI是通用网关接口，是一种比较传统的动态网页的实现方式），通过Get方法获取到了一串随机的字符串。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/hYjMGzbcuK3rn9F.png"></p>
+<p>在获取完成后进行一些暂时未知的处理后请求了web_login.cgi，请求数据中包括了管理员用户名与密码，可以发现pass密码中的值并不是我们所填入的密码值，首先猜测可能为md5或aes加密后的字符串。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/dRaCTYcKXIGtn9e.png"></p>
+<p>查看登陆接口在登陆成功后的返还与Header。接口返还了登陆状态码以及Token-ID字段数据，同时在返回的Header中可以看到有Set-Cookie字段，猜测在后续的数据接口中应该会在请求头中携带token以及cookie进行权限验证。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/uhJop1VMIiS2AHF.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/97WvGq3pLAVJyY8.png"></p>
+<p>查看后续请求头，可以观察到在Cookie中携带了先前返回的信息，包含Set-Cookie以及token信息。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/p6kqYZRSTmeH5C7.png"></p>
+<p>目前为止，可以对登陆过程进行一个小总结。</p>
+<p>输入账号密码→点击登录→获取随机字符串→进行加密→请求登录接口→获取Cookie以及token</p>
+<p>目前主要难点为如何进行加密的逆向破解。</p>
+<h3 id="逆向"><a href="#逆向" class="headerlink" title="逆向"></a>逆向</h3><p>首先尝试md5加密，与目标密码不一致。</p>
+<p>其次尝试简单粗暴的方式，查源码。查看js代码后，发现js代码进过webpack混淆打包，从函数名以及变量名中很难找出加密的代码块，因此使用关键词进行搜索。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/CvOPTq6JdurMxmn.png"></p>
+<p>果然还是简单粗暴比较有用，在搜索到AES关键词后，可以从代码中发现密码加密的关键逻辑<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/04/29/8x3N4wdiPZRpShO.png"></p>
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (;;)</span><br><span class="line">                        <span class="keyword">switch</span> (t.prev = t.next) &#123;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                            <span class="keyword">return</span> t.next = <span class="number">2</span>, c(<span class="number">0</span>).then((<span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123;</span><br><span class="line">                                r = n || t;</span><br><span class="line">                                <span class="keyword">var</span> o = a.enc.Hex.parse(r.rand_key),</span><br><span class="line">                                    u = a.enc.Latin1.parse(<span class="string">&quot;360luyou@install&quot;</span>),</span><br><span class="line">                                    c = a.AES.encrypt(e, o, &#123;</span><br><span class="line">                                        iv: u,</span><br><span class="line">                                        mode: a.mode.CBC,</span><br><span class="line">                                        padding: a.pad.Pkcs7</span><br><span class="line">                                    &#125;);</span><br><span class="line">                                i = c.ciphertext.toString()</span><br><span class="line">                            &#125;));</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                            <span class="keyword">return</span> t.abrupt(<span class="string">&quot;return&quot;</span>, r.key_index + i);</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">&quot;end&quot;</span>:</span><br><span class="line">                            <span class="keyword">return</span> t.stop()</span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (;;)</span><br><span class="line">                        <span class="keyword">switch</span> (t.prev = t.next) &#123;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">                            <span class="keyword">if</span> (r = e.substr(<span class="number">32</span>, e.length - <span class="number">32</span>), i = &#123;&#125;, !n) &#123;</span><br><span class="line">                                t.next = <span class="number">6</span>;</span><br><span class="line">                                <span class="keyword">break</span></span><br><span class="line">                            &#125;</span><br><span class="line">                            i.rand_key = n,</span><br><span class="line">                            t.next = <span class="number">9</span>;</span><br><span class="line">                            <span class="keyword">break</span>;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">                            <span class="keyword">return</span> t.next = <span class="number">8</span>, c(<span class="number">0</span>, e, !<span class="number">0</span>);</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">                            i = t.sent;</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">                            <span class="keyword">if</span> (i.rand_key) &#123;</span><br><span class="line">                                t.next = <span class="number">11</span>;</span><br><span class="line">                                <span class="keyword">break</span></span><br><span class="line">                            &#125;</span><br><span class="line">                            <span class="keyword">return</span> t.abrupt(<span class="string">&quot;return&quot;</span>, e);</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">11</span>:</span><br><span class="line">                            <span class="keyword">return</span> u = a.enc.Hex.parse(i.rand_key), s = a.enc.Latin1.parse(<span class="string">&quot;360luyou@install&quot;</span>), d = a.enc.Hex.parse(r).toString(a.enc.Base64), p = a.AES.decrypt(d, u, &#123;</span><br><span class="line">                                iv: s,</span><br><span class="line">                                mode: a.mode.CBC,</span><br><span class="line">                                padding: a.pad.Pkcs7</span><br><span class="line">                            &#125;), t.abrupt(<span class="string">&quot;return&quot;</span>, p.toString(a.enc.Utf8));</span><br><span class="line">                        <span class="keyword">case</span> <span class="number">16</span>:</span><br><span class="line">                        <span class="keyword">case</span> <span class="string">&quot;end&quot;</span>:</span><br><span class="line">                            <span class="keyword">return</span> t.stop()</span><br><span class="line">                        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>虽然变量名与函数名被混淆，但可以从代码中看到采用AES加密。</p>
+<p>首先进行加密前的处理，对rand_key进行hex，定义iv，设置模式为CBC，padding为PKCS7。</p>
+<p>加密步骤为：</p>
+<ol>
+<li>获取rand_key的后32位进行hex</li>
+<li>对密码进行PKCS7Encode</li>
+<li>最后以hex后的rand_key作为key，PKCS7Encode后的密码作为plainText，360luyou@install字符串进行hex后作为iv</li>
+<li>进行AES加密</li>
+</ol>
+<p>在加密结束后，将前rand_key前32位与加密字符串进行拼接作为pass传输到路由器进行登录验证。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>这里给出Python与Go的加密示例。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_aes_str</span>(<span class="params">rand_key: <span class="built_in">bytes</span></span>):</span></span><br><span class="line">    mode = AES.MODE_CBC</span><br><span class="line">    iv = <span class="string">b&#x27;\x33\x36\x30\x6c\x75\x79\x6f\x75\x40\x69\x6e\x73\x74\x61\x6c\x6c&#x27;</span>  <span class="comment"># &quot;360luyou@install&quot;.decode(&#x27;hex&#x27;)</span></span><br><span class="line">    encryptor = AES.new(rand_key, mode, iv)</span><br><span class="line">    encoder = PKCS7Encoder()</span><br><span class="line">    text = <span class="string">&quot;password&quot;</span>  <span class="comment"># password</span></span><br><span class="line">    pad_text = encoder.encode(text)</span><br><span class="line">    cipher = encryptor.encrypt(<span class="built_in">bytes</span>(pad_text, <span class="string">&quot;utf-8&quot;</span>))</span><br><span class="line">    <span class="keyword">return</span> cipher</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GenerateAesString 生成加密字符串</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Router)</span> <span class="title">GenerateAesString</span><span class="params">()</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">	<span class="comment">// 判断随机字符串是否为空</span></span><br><span class="line">	<span class="keyword">if</span> r.randStr == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		g.Dump(<span class="string">&quot;randStr is empty&quot;</span>)</span><br><span class="line">		err := r.GetRandomString()</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			g.Dump(err)</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// randKey := &quot;fbf8a1ca3b31ace17adece7f6941a278017ff28b58200c5a153e07f5dc840b3f&quot;</span></span><br><span class="line">	decodeString, err := hex.DecodeString(r.randStr[<span class="number">32</span>:])</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Dump(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	block, err := aes.NewCipher(decodeString)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptor := cipher.NewCBCEncrypter(block, configs.DefaultAesIv)</span><br><span class="line">	p7 := utils.PKCS7Encoder&#123;BlockSize: <span class="number">16</span>&#125;</span><br><span class="line">	padded := p7.Encode([]<span class="keyword">byte</span>(r.Password))</span><br><span class="line">	cipherText := <span class="built_in">make</span>([]<span class="keyword">byte</span>, <span class="built_in">len</span>(padded))</span><br><span class="line">	encryptor.CryptBlocks(cipherText, padded)</span><br><span class="line">	r.aesStr = hex.EncodeToString(cipherText)</span><br><span class="line">	<span class="keyword">if</span> r.aesStr == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">		g.Dump(<span class="string">&quot;aesStr is empty&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> errors.New(<span class="string">&quot;aesStr is empty&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	g.Dump(gtime.Now().String() + <span class="string">&quot; Generate AESKey &quot;</span> + r.aesStr)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Go项目代码层级"><a href="#Go项目代码层级" class="headerlink" title="Go项目代码层级"></a>Go项目代码层级</h2><p>完整的登陆以及获取信息由Go代码进行编写。</p>
+<p>首先定义不同模块的接口以及结构体</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> LoginMethod <span class="keyword">interface</span> &#123;</span><br><span class="line">	Login() error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> AesMethod <span class="keyword">interface</span> &#123;</span><br><span class="line">	GetRandomString() error</span><br><span class="line">	GenerateAesString() error</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Router <span class="keyword">struct</span> &#123;</span><br><span class="line">	Address   <span class="keyword">string</span></span><br><span class="line">	Password  <span class="keyword">string</span></span><br><span class="line">	state     <span class="keyword">bool</span></span><br><span class="line">	aesIv     []<span class="keyword">byte</span></span><br><span class="line">	inHeaders <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line">	randStr   <span class="keyword">string</span></span><br><span class="line">	aesStr    <span class="keyword">string</span></span><br><span class="line">	token     <span class="keyword">string</span></span><br><span class="line">	cookie    <span class="keyword">string</span></span><br><span class="line">	Headers   <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> RouterMethod <span class="keyword">interface</span> &#123;</span><br><span class="line">	GetRouterInfo() error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后以嵌套接口的形式将不同模块组合起来。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> RouterController <span class="keyword">interface</span> &#123;</span><br><span class="line">	LoginMethod</span><br><span class="line">	AesMethod</span><br><span class="line">	RouterMethod</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在调用时，采用接口赋值的形式调用接口内的方法，使程序变得更加灵活且便于维护。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> routerMain internal.RouterController</span><br><span class="line">	myRouter := internal.Router&#123;</span><br><span class="line">		Address:  configs.RouterAddress,</span><br><span class="line">		Password: configs.RouterPassword,</span><br><span class="line">	&#125;</span><br><span class="line">	routerMain = &amp;myRouter</span><br><span class="line"></span><br><span class="line">	err := routerMain.GetRandomString()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Dump(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	err = routerMain.GenerateAesString()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Dump(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	err = routerMain.Login()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Dump(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	err = routerMain.GetRouterInfo()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Dump(err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/04/24/%E4%B8%80%E6%AC%A1Go%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98%E7%9A%84%E5%8F%91%E7%8E%B0%E4%B8%8E%E8%A7%A3%E5%86%B3/">Go语言项目内存泄露问题的发现与解决</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://xinyu.today/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
+  }
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
