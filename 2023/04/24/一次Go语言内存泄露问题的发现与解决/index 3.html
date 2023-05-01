@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Go语言项目内存泄露问题的发现与解决 - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="一个语言转换导致的思路问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语言项目内存泄露问题的发现与解决">
+<meta property="og:url" content="https://xinyu.today/2023/04/24/%E4%B8%80%E6%AC%A1Go%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E9%97%AE%E9%A2%98%E7%9A%84%E5%8F%91%E7%8E%B0%E4%B8%8E%E8%A7%A3%E5%86%B3/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="一个语言转换导致的思路问题">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-01T07:22:36.507Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://120.24.211.49/20221102012153.png">
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://120.24.211.49/20221102011714.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0"><span class="toc-text">问题描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="toc-text">原功能实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2%E5%8E%9F%E5%9B%A0"><span class="toc-text">内存泄露原因</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="toc-text">解决办法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8EGC"><span class="toc-text">关于GC</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="http://memo.xinyu.today:580" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://chat.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/Go/">Go</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2023-04-23T16:00:00.000Z'>2023-04-24</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>Go语言项目内存泄露问题的发现与解决</span></h1>
+<h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><p>后端功能为采集家庭网络信息并对外开放接口，每1s或每5s进行采集。</p>
+<p>采用docker打包Go编译完成后的二进制文件，通过docker-compose部署在云服务器上。</p>
+<p>在运行一段时间后，内存报警，内存占用不断增高，怀疑发生了内存泄漏，且GC在其中无法清理内存。</p>
+<h2 id="原功能实现"><a href="#原功能实现" class="headerlink" title="原功能实现"></a>原功能实现</h2><p>原功能采用for关键词加time.Sleep进行实现，参考于Python服务器探针代码。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">	CPU = get_cpu()</span><br><span class="line">	Uptime = get_uptime()</span><br><span class="line">	Load_1, Load_5, Load_15 = os.getloadavg()</span><br><span class="line">	MemoryTotal, MemoryUsed, SwapTotal, SwapFree = get_memory()</span><br><span class="line">	HDDTotal, HDDUsed = get_hdd()</span><br><span class="line">  get_router_info()</span><br></pre></td></tr></table></figure>
+
+<p>在Go代码中，为获取一段时间内的消耗流量与消耗流量最多用户，创建了两个变量。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> maxFLow <span class="keyword">int</span></span><br><span class="line"><span class="keyword">var</span> maxFLowUser <span class="keyword">string</span></span><br></pre></td></tr></table></figure>
+
+<p>并在后续的计算中给变量赋值</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 计算用户流量变化</span></span><br><span class="line">			<span class="keyword">for</span> _, user := <span class="keyword">range</span> userList.Array() &#123;</span><br><span class="line">				userMap := gconv.Map(user)</span><br><span class="line">				<span class="keyword">for</span> _, userNow := <span class="keyword">range</span> userListNow &#123;</span><br><span class="line">					userNowMap := gconv.Map(userNow)</span><br><span class="line">					<span class="keyword">if</span> userMap[<span class="string">&quot;id&quot;</span>] == userNowMap[<span class="string">&quot;id&quot;</span>] &#123;</span><br><span class="line">						<span class="comment">// 计算用户流量变化</span></span><br><span class="line">						totalFlow := gconv.Int(userNowMap[<span class="string">&quot;down&quot;</span>]) - gconv.Int(userMap[<span class="string">&quot;down&quot;</span>])</span><br><span class="line">						<span class="keyword">if</span> totalFlow &gt; maxFLow &#123;</span><br><span class="line">							maxFLow = totalFlow</span><br><span class="line">							maxFLowUser = gconv.String(userNowMap[<span class="string">&quot;remark&quot;</span>])</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="内存泄露原因"><a href="#内存泄露原因" class="headerlink" title="内存泄露原因"></a>内存泄露原因</h2><p>由于采用for关键词，在 Go 中，如果在 for 循环中创建了一个新的变量，但在每个循环迭代中没有将其重新分配，则可能会导致内存泄漏。</p>
+<p>例如，以下代码段将创建一个新的字符串，并在每个循环迭代中将其连接到另一个字符串上，但它没有在每个迭代中将新字符串重新分配：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result <span class="keyword">string</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++ &#123;</span><br><span class="line">    newString := <span class="string">&quot;hello&quot;</span></span><br><span class="line">    result += newString</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这种情况下，每次迭代都会创建一个新的字符串，但由于新的字符串没有重新分配，因此在每个迭代后，将有一个新的字符串和一个旧的字符串（在 result 变量中）仍然引用它。这会导致大量的内存泄漏，因为旧的字符串仍然存在于内存中，而无法被垃圾回收器清理。</p>
+<p>为了避免内存泄漏，可以在每个迭代中将新字符串重新分配给变量，如下所示：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> result <span class="keyword">string</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">1000000</span>; i++ &#123;</span><br><span class="line">    newString := <span class="string">&quot;hello&quot;</span></span><br><span class="line">    result += newString</span><br><span class="line">    newString = <span class="string">&quot;&quot;</span> <span class="comment">// 重新分配</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过将新字符串分配给一个新变量，可以确保每次迭代都有一个新的变量来引用新的字符串，从而避免内存泄漏。在重新分配新变量后，旧的字符串将不再被引用，并且可以被垃圾回收器清理。</p>
+<p>归根结底，则是在每次循环中创建的变量一直处在引用状态，GC无法正确对其进行垃圾回收，导致程序内存占用一直在不断升高。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>采用Go语言的思路进行书写，项目基于Goframe框架，重构后采用框架中的gcron（定时任务）进行定期的数据拉取，函数内部定义参数可在函数在执行结束后结束引用关系，避免采用for循环造成内存泄露。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">_, err = gcron.AddSingleton(ctx, <span class="string">&quot;*/5 * * * * *&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">				err = network_utils.NodeUtils.GetNodeInfo()</span><br><span class="line">				<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">					g.Dump(err)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;, <span class="string">&quot;获取当前代理节点信息&quot;</span>)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				<span class="built_in">panic</span>(err)</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="关于GC"><a href="#关于GC" class="headerlink" title="关于GC"></a>关于GC</h2><p>Go语言的垃圾回收（GC）是在运行时进行的，不是在函数结束后。Go语言的垃圾回收器是一种并发、自适应的垃圾回收器，它会在程序运行时自动检测内存使用情况，并在必要时回收不再使用的内存。</p>
+<p>具体来说，Go语言的垃圾回收器会在程序运行时周期性地扫描堆内存中的对象，标记那些仍然被引用的对象，然后清理那些未被引用的对象。垃圾回收器的执行时间由当前程序的内存使用情况和硬件配置等因素决定，并不一定在函数结束后立即进行。</p>
+<p>总之，Go语言的垃圾回收是一种自动的、并发的机制，它可以在程序运行时周期性地回收未被引用的内存。这种机制可以减少程序员的内存管理负担，提高程序的可靠性和性能。</p>
+
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/04/15/%E5%AE%9E%E7%8E%B0%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%8A%82%E7%82%B9%E5%88%86%E4%BA%AB%20/">家庭负载均衡节点部署</a></div><div class="post-title fs14"><a href="/2023/04/29/%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96360%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BF%A1%E6%81%AF%20/">上一篇：逆向破解登录获取360路由器信息</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://xinyu.today/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
+  }
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
