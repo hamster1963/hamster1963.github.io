@@ -30,11 +30,11 @@
 <meta property="og:image" content="https://s2.loli.net/2023/05/23/F5xGV3UgXrmOPAh.png">
 <meta property="og:image" content="https://s2.loli.net/2023/05/23/z5es4VuFhUygAI7.png">
 <meta property="article:published_time" content="2023-05-23T09:40:00.000Z">
-<meta property="article:modified_time" content="2023-05-23T09:43:33.523Z">
+<meta property="article:modified_time" content="2023-05-23T09:40:40.393Z">
 <meta property="article:author" content="Hamster">
-<meta property="article:tag" content="Github">
 <meta property="article:tag" content="Docker">
 <meta property="article:tag" content="Go">
+<meta property="article:tag" content="Github">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://s2.loli.net/2023/05/23/F5xGV3UgXrmOPAh.png">
   
@@ -126,11 +126,11 @@
 <p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/23/F5xGV3UgXrmOPAh.png"></p>
 <h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>在进行Go程序的编译时，可以通过传入额外的参数来修改编译过程，比较常见的有：</p>
 <ol>
-<li><strong><code>o &lt;output&gt;</code></strong>: 指定输出文件的名称。例如，<code>go build -o myprogram</code>将生成名为 <code>myprogram</code> 的可执行文件。</li>
-<li><strong><code>ldflags &quot;&lt;flags&gt;&quot;</code></strong>: 用于传递链接器（ld）的标志。您可以使用此选项将特定标志传递给链接器，例如设置版本信息或自定义链接行为。例如，<code>go build -ldflags &quot;-X main.version=1.0.0&quot;</code>将在构建过程中设置名为 <strong><code>version</code></strong> 的变量的值为 <code>1.0.0</code>。</li>
-<li><strong><code>gcflags &quot;&lt;flags&gt;&quot;</code></strong>: 用于传递Go编译器（gc）的标志。您可以使用此选项传递特定标志给编译器，例如优化级别或其他调试信息。例如，<code>go build -gcflags &quot;-N -l&quot;</code> 将禁用优化并生成带有调试信息的可执行文件。</li>
+<li><strong><code>o &lt;output&gt;</code></strong>: 指定输出文件的名称。例如，**<code>go build -o myprogram</code>** 将生成名为 <strong><code>myprogram</code></strong> 的可执行文件。</li>
+<li><strong><code>ldflags &quot;&lt;flags&gt;&quot;</code></strong>: 用于传递链接器（ld）的标志。您可以使用此选项将特定标志传递给链接器，例如设置版本信息或自定义链接行为。例如，**<code>go build -ldflags &quot;-X main.version=1.0.0&quot;</code>** 将在构建过程中设置名为 <strong><code>version</code></strong> 的变量的值为 **<code>1.0.0</code>**。</li>
+<li><strong><code>gcflags &quot;&lt;flags&gt;&quot;</code></strong>: 用于传递Go编译器（gc）的标志。您可以使用此选项传递特定标志给编译器，例如优化级别或其他调试信息。例如，**<code>go build -gcflags &quot;-N -l&quot;</code>** 将禁用优化并生成带有调试信息的可执行文件。</li>
 </ol>
-<p>本次的实现则是利用<code>ldflags &quot;&lt;flags&gt;&quot;</code>指令进行信息的注入。</p>
+<p>本次的实现则是利用**<code>ldflags &quot;&lt;flags&gt;&quot;</code>** 指令进行信息的注入。</p>
 <h2 id="核心构建指令"><a href="#核心构建指令" class="headerlink" title="核心构建指令"></a>核心构建指令</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">go build -o ./temp/release/linux_amd64/service -ldflags <span class="string">&quot;     -X &#x27;home-network-watcher/utility/bin_utils.GitTag=v1.11.12&#x27;     -X &#x27;home-network-watcher/utility/bin_utils.GitCommitLog=8405a9a7a15c33399d8cc400f08836e14b9dc085&#x27;     -X &#x27;home-network-watcher/utility/bin_utils.BuildTime=2023.05.21.03:56:22&#x27;     -X &#x27;home-network-watcher/utility/bin_utils.BuildGoVersion=github@action golang:1.20-buster&#x27; &quot;</span>  main.go</span><br></pre></td></tr></table></figure>
 
 <p>接下来进行Go代码与GitHub Actions、Dockerfile的编写。</p>
