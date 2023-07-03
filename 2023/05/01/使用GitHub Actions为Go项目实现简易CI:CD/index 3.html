@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>使用GitHub Actions为Go项目实现简易CI/CD - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="GIthub Actions &amp; CI&#x2F;CD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用GitHub Actions为Go项目实现简易CI&#x2F;CD">
+<meta property="og:url" content="https://xinyu.today/2023/05/01/%E4%BD%BF%E7%94%A8GitHub%20Actions%E4%B8%BAGo%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93CI:CD/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="GIthub Actions &amp; CI&#x2F;CD">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/3knKw9TEiHsIJYt.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/4I6uCWfpiXgcNZK.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/5WStRVPOZh4MzeD.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/bTpIQWdFaGjXs6t.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/slGbngieMRJIqZo.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/AMTp96LrmwROkcj.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/mCYA7OkpiJ43Pba.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/01/tVzdPTXu3UZeb8k.jpg">
+<meta property="article:published_time" content="2023-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-01T07:52:38.000Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Github">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/05/01/3knKw9TEiHsIJYt.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://s2.loli.net/2023/05/17/4vxnSlMUq5PZFt3.png">
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://s2.loli.net/2023/05/17/RytQSDUMeJOkhGI.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Github-Actions%E4%B8%8ECI-CD"><span class="toc-text">Github Actions与CI&#x2F;CD</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E7%9B%AE%E6%A0%87"><span class="toc-text">实现目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%BD%AE%E5%87%86%E5%A4%87"><span class="toc-text">前置准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BAActions%E5%BC%80%E6%94%BE%E4%BB%93%E5%BA%93%E6%9D%83%E9%99%90"><span class="toc-text">为Actions开放仓库权限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96Docker%E7%9B%B8%E5%85%B3%E4%BF%A1%E6%81%AF"><span class="toc-text">获取Docker相关信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E8%A1%8Csecrets%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="toc-text">进行secrets的设置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AEActions"><span class="toc-text">设置Actions</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E7%BC%96%E8%AF%91%E6%A3%80%E6%9F%A5%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">代码编译检查工作流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E6%9E%84%E5%BB%BA%E5%B9%B6%E6%8E%A8%E9%80%81Docker%E9%95%9C%E5%83%8F"><span class="toc-text">编译构建并推送Docker镜像</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%A4%9A%E5%B9%B3%E5%8F%B0%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6"><span class="toc-text">编译多平台二进制文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B6%88%E6%81%AF%E9%80%9A%E7%9F%A5"><span class="toc-text">消息通知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TODO-%E5%8F%AF%E5%A4%8D%E7%94%A8%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-text">TODO: 可复用工作流</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://hamster1963.notion.site/239ba9c875e443619ba7ab6d30526cbd" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://talk.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/Go/">Go</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/Go/Docker/">Docker</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/Go/Docker/Github/">Github</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2023-04-30T16:00:00.000Z'>2023-05-01</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>使用GitHub Actions为Go项目实现简易CI/CD</span></h1>
+<h2 id="Github-Actions与CI-CD"><a href="#Github-Actions与CI-CD" class="headerlink" title="Github Actions与CI/CD"></a>Github Actions与CI/CD</h2><p>GitHub Actions是GitHub提供的一种自动化工具，可以帮助您在代码仓库中自动执行任务，如构建、测试和部署。CI/CD（持续集成/持续部署）是一种自动化软件开发实践，可以帮助您更快地交付高质量的软件。在本文中，我们将介绍如何使用GitHub Actions为Go项目实现简易CI/CD。</p>
+<h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/3knKw9TEiHsIJYt.png"></p>
+<p>将Actions主要分为三个部分</p>
+<ol>
+<li>在代码提交后进行编译检查，检查是否存在代码错误。</li>
+<li>在进行git tag操作后，针对tag进行docker镜像的构建与推送。</li>
+<li>达到版本号发布时，自动构建多平台可执行二进制文件。</li>
+</ol>
+<h2 id="前置准备"><a href="#前置准备" class="headerlink" title="前置准备"></a>前置准备</h2><h3 id="为Actions开放仓库权限"><a href="#为Actions开放仓库权限" class="headerlink" title="为Actions开放仓库权限"></a>为Actions开放仓库权限</h3><p>在仓库主页，选中<strong>Settings→Actions→General→Workflow permissions</strong>，将权限设置为Read and write permisssions。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/4I6uCWfpiXgcNZK.png"></p>
+<h3 id="获取Docker相关信息"><a href="#获取Docker相关信息" class="headerlink" title="获取Docker相关信息"></a>获取Docker相关信息</h3><p>将信息储存在<strong>Actions secrets and variables</strong>中，分别设置Docker用户名，token与仓库名称。</p>
+<p>获取 Docker token 的步骤如下：</p>
+<ol>
+<li>登录到 Docker Hub 帐户。</li>
+<li>点击右上角的头像，选择“Account Settings”。</li>
+<li>在左侧菜单中选择“Security”。</li>
+<li>滚动到“Access Tokens”部分，然后单击“New Access Token”按钮。</li>
+<li>输入访问令牌的描述，选择令牌的有效期，并选择要授予令牌的权限。</li>
+<li>单击“Create”按钮以生成令牌。</li>
+<li>复制生成的令牌并保存在安全的地方。</li>
+</ol>
+<p>仓库名称则为 <strong>用户名/仓库名</strong></p>
+<h3 id="进行secrets的设置"><a href="#进行secrets的设置" class="headerlink" title="进行secrets的设置"></a>进行secrets的设置</h3><p>在<strong>Settings→Secrets and variables</strong>中点击<strong>New repository secret</strong>进行新增。</p>
+<ol>
+<li>DOCKER_USERNAME</li>
+<li>DOCKER_ACCESS_TOKEN </li>
+<li>DOCKER_IMAGE_NAME</li>
+</ol>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/5WStRVPOZh4MzeD.png"></p>
+<h2 id="设置Actions"><a href="#设置Actions" class="headerlink" title="设置Actions"></a>设置Actions</h2><p>点击仓库内<strong>Actions</strong>模块，点击<strong>New workflow</strong>进行工作流的新增。</p>
+<h3 id="代码编译检查工作流"><a href="#代码编译检查工作流" class="headerlink" title="代码编译检查工作流"></a>代码编译检查工作流</h3><p>将会在检测到push或pull_request后进行代码编译检查。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># This workflow will build a golang project</span></span><br><span class="line"><span class="comment"># For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go</span></span><br><span class="line"></span><br><span class="line"><span class="attr">name:</span> <span class="string">代码编译测试</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">&quot;main&quot;</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">&quot;main&quot;</span> ]</span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Go</span></span><br><span class="line">      <span class="attr">uses:</span> <span class="string">actions/setup-go@v3</span></span><br><span class="line">      <span class="attr">with:</span></span><br><span class="line">        <span class="attr">go-version:</span> <span class="number">1.19</span></span><br><span class="line"></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">go</span> <span class="string">build</span> <span class="string">-v</span> <span class="string">./...</span></span><br><span class="line">        <span class="string">pwd</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="编译构建并推送Docker镜像"><a href="#编译构建并推送Docker镜像" class="headerlink" title="编译构建并推送Docker镜像"></a>编译构建并推送Docker镜像</h3><p>此工作流只会在仓库新增tag时进行。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">git</span> <span class="string">tag</span> <span class="string">v0.0.1</span></span><br><span class="line"><span class="string">git</span> <span class="string">push</span> <span class="string">--tags</span></span><br></pre></td></tr></table></figure>
+
+<p>工作流分为以下几个步骤</p>
+<ol>
+<li>获取tag作为版本号</li>
+<li>根据Dockerfile进行Docker镜像的构建</li>
+<li>针对构建完成镜像进行tag打版本号</li>
+<li>将镜像推送至Dockerhub</li>
+</ol>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Build</span> <span class="string">and</span> <span class="string">push</span> <span class="string">Docker</span> <span class="string">image</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">tags:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&#x27;v*&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">env:</span></span><br><span class="line">  <span class="attr">IMAGE_NAME:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DOCKER_IMAGE_NAME</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-and-push:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Get</span> <span class="string">version</span></span><br><span class="line">        <span class="attr">id:</span> <span class="string">get_version</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;VERSION=$&#123;GITHUB_REF/refs\/tags\//&#125;&quot;</span> <span class="string">&gt;&gt;</span> <span class="string">$GITHUB_OUTPUT</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span> <span class="string">code</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Login</span> <span class="string">to</span> <span class="string">Dockerhub</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">docker/login-action@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">username:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DOCKER_USERNAME</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">password:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.DOCKER_ACCESS_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Build</span> <span class="string">Docker</span> <span class="string">image</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">docker</span> <span class="string">build</span> <span class="string">-t</span> <span class="string">$IMAGE_NAME:$&#123;&#123;</span> <span class="string">github.sha</span> <span class="string">&#125;&#125;</span> <span class="string">.</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Tag</span> <span class="string">Docker</span> <span class="string">image</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">docker</span> <span class="string">tag</span> <span class="string">$IMAGE_NAME:$&#123;&#123;</span> <span class="string">github.sha</span> <span class="string">&#125;&#125;</span> <span class="string">$IMAGE_NAME:$&#123;&#123;</span> <span class="string">steps.get_version.outputs.VERSION</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Tag</span> <span class="string">Docker</span> <span class="string">image</span> <span class="string">as</span> <span class="string">latest</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">docker</span> <span class="string">tag</span> <span class="string">$IMAGE_NAME:$&#123;&#123;</span> <span class="string">github.sha</span> <span class="string">&#125;&#125;</span> <span class="string">$IMAGE_NAME:latest</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Push</span> <span class="string">Docker</span> <span class="string">image</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">            <span class="string">docker</span> <span class="string">push</span> <span class="string">$IMAGE_NAME:$&#123;&#123;</span> <span class="string">steps.get_version.outputs.VERSION</span> <span class="string">&#125;&#125;</span></span><br><span class="line">            <span class="string">docker</span> <span class="string">push</span> <span class="string">$IMAGE_NAME:latest</span></span><br></pre></td></tr></table></figure>
+
+<p>这时我们需要针对项目进行Dockerfile的编写，一下是一个针对Goframe项目的示例。</p>
+<ol>
+<li>设置golang构建环境，有许多版本可以选择，可以参考<a target="_blank" rel="noopener" href="https://hub.docker.com/_/golang">https://hub.docker.com/_/golang</a>，这里选择<strong>golang:1.20-buster。</strong></li>
+<li>拷贝代码至构建环境，进行构建，在这里将编译完成后将二进制文件命名为service，构建命令也可以指定系统与架构，在命令中加上<strong>GOOS=linux GOARCH=amd64</strong>。</li>
+<li>设置镜像环境，设置工作路径，为二进制文件添加权限并增加端口绑定。</li>
+<li>设置入口命令。</li>
+</ol>
+<p>至此一份Dockerfile就编写完成了。</p>
+<figure class="highlight docker"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> golang:<span class="number">1.20</span>-buster AS builder</span><br><span class="line"></span><br><span class="line"><span class="keyword">ARG</span> VERSION=dev</span><br><span class="line"></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /go/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> CGO_ENABLED=0 go build -o service -ldflags=-X=main.version=<span class="variable">$&#123;VERSION&#125;</span> main.go</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">FROM</span> loads/alpine:<span class="number">3.8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintainer=<span class="string">&quot;Hamster &lt;liaolaixin@gmail.com&gt;&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################################</span></span><br><span class="line"><span class="comment">#                                INSTALLATION</span></span><br><span class="line"><span class="comment">###############################################################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置固定的项目路径</span></span><br><span class="line"><span class="keyword">ENV</span> <span class="keyword">WORKDIR</span><span class="bash"> /app/main</span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> --from=builder /go/src/app/service <span class="variable">$WORKDIR</span>/service</span></span><br><span class="line"><span class="comment"># 添加应用可执行文件，并设置执行权限</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> chmod +x <span class="variable">$WORKDIR</span>/service</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加端口绑定</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">10399</span></span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################################################</span></span><br><span class="line"><span class="comment">#                                   START</span></span><br><span class="line"><span class="comment">###############################################################################</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> <span class="variable">$WORKDIR</span></span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [<span class="string">&quot;./service&quot;</span>]</span></span><br></pre></td></tr></table></figure>
+
+<p>新增后通过git tag测试工作流，检查Dockerhub是否有最新构建镜像。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/bTpIQWdFaGjXs6t.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/slGbngieMRJIqZo.png"></p>
+<h2 id="编译多平台二进制文件"><a href="#编译多平台二进制文件" class="headerlink" title="编译多平台二进制文件"></a>编译多平台二进制文件</h2><p>设置为只在新增release时进行构建，可以设置需要的系统架构或排除的，十分简单易用。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">build-go-binary</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">release:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">created</span>] <span class="comment"># 表示在创建新的 Release 时触发</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build-go-binary:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">matrix:</span></span><br><span class="line">        <span class="attr">goos:</span> [<span class="string">linux</span>, <span class="string">windows</span>, <span class="string">darwin</span>] <span class="comment"># 需要打包的系统</span></span><br><span class="line">        <span class="attr">goarch:</span> [<span class="string">amd64</span>, <span class="string">arm64</span>] <span class="comment"># 需要打包的架构</span></span><br><span class="line">        <span class="attr">exclude:</span> <span class="comment"># 排除某些平台和架构</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">goarch:</span> <span class="string">arm64</span></span><br><span class="line">            <span class="attr">goos:</span> <span class="string">windows</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">wangyoucao577/go-release-action@v1</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span> <span class="comment"># 一个默认的变量，用来实现往 Release 中添加文件</span></span><br><span class="line">          <span class="attr">goos:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.goos</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">goarch:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.goarch</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">goversion:</span> <span class="number">1.18</span> <span class="comment"># 可以指定编译使用的 Golang 版本</span></span><br><span class="line">          <span class="attr">binary_name:</span> <span class="string">&quot;push_go&quot;</span> <span class="comment"># 可以指定二进制文件的名称</span></span><br><span class="line">          <span class="attr">pre_command:</span> <span class="string">export</span> <span class="string">CGO_ENABLED=0</span> <span class="string">&amp;&amp;</span> <span class="string">export</span> <span class="string">GODEBUG=http2client=0</span></span><br><span class="line">          <span class="attr">overwrite:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>在仓库中新增release并测试，等待编译完成后即可在release中查看不同系统架构的二进制文件。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/AMTp96LrmwROkcj.png"></p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/mCYA7OkpiJ43Pba.png"></p>
+<h2 id="消息通知"><a href="#消息通知" class="headerlink" title="消息通知"></a>消息通知</h2><p>可针对Actions的进度进行消息通知，在<strong>Settings→Webhooks</strong>设置推送目标URL，搭配自建的消息推送即可实现在手机上获取Actions进度流程。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/01/tVzdPTXu3UZeb8k.jpg" style="zoom:33%;" />
+
+<h2 id="TODO-可复用工作流"><a href="#TODO-可复用工作流" class="headerlink" title="TODO: 可复用工作流"></a>TODO: 可复用工作流</h2>
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/04/29/%E7%99%BB%E5%BD%95%E8%8E%B7%E5%8F%96360%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BF%A1%E6%81%AF%20/">逆向破解登录获取360路由器信息</a></div><div class="post-title fs14"><a href="/2023/05/23/%E5%88%A9%E7%94%A8Github%20Actions%E4%B8%BAGo%E7%A8%8B%E5%BA%8F%E6%B7%BB%E5%8A%A0git%E4%B8%8E%E7%BC%96%E8%AF%91%E4%BF%A1%E6%81%AF/">上一篇：利用Github Actions为Go程序添加git与编译信息</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://xinyu.today/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":false,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
+  }
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
