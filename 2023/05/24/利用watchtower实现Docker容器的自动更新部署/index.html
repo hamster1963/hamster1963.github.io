@@ -1,358 +1,45 @@
-<!DOCTYPE html>
-<html lang='zh-CN'>
-
-<head>
-  <meta name="generator" content="Hexo 5.4.0">
-  <meta charset="utf-8">
-  
-
-  <meta http-equiv='x-dns-prefetch-control' content='on' />
-  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-
-  <meta name="renderer" content="webkit">
-  <meta name="force-rendering" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-  <meta name="HandheldFriendly" content="True" >
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <title>利用watchtower实现Docker容器的自动更新部署 - 仓鼠杂货铺</title>
-
-  
-    <meta name="description" content="docker watchtower &amp; CI&#x2F;CD">
-<meta property="og:type" content="article">
-<meta property="og:title" content="利用watchtower实现Docker容器的自动更新部署">
-<meta property="og:url" content="https://xinyu.today/2023/05/24/%E5%88%A9%E7%94%A8watchtower%E5%AE%9E%E7%8E%B0Docker%E5%AE%B9%E5%99%A8%E7%9A%84%E8%87%AA%E5%8A%A8%E6%9B%B4%E6%96%B0%E9%83%A8%E7%BD%B2/index.html">
-<meta property="og:site_name" content="仓鼠杂货铺">
-<meta property="og:description" content="docker watchtower &amp; CI&#x2F;CD">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2023/05/23/NVSKzd53wo4mfGu.jpg">
-<meta property="og:image" content="https://s2.loli.net/2023/05/23/39TIpxOSBLDvVEY.png">
-<meta property="article:published_time" content="2023-05-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-05-23T13:09:30.251Z">
-<meta property="article:author" content="Hamster">
-<meta property="article:tag" content="Docker">
-<meta property="article:tag" content="Go">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://s2.loli.net/2023/05/23/NVSKzd53wo4mfGu.jpg">
-  
-  
-
-  <!-- feed -->
-  
-
-  
-    
-<link rel="stylesheet" href="/css/main.css">
-
-  
-
-  
-    <link rel="shortcut icon" type='image/x-icon' href="https://s2.loli.net/2023/05/17/4vxnSlMUq5PZFt3.png">
-  
-</head>
-
-<body>
-  
-
-
-  <div class='l_body' id='start'>
-    <aside class='l_left'>
-    
-
-<header class='header'>
-  <div class='logo-wrap'>
-  
-    <a class='avatar' href='/about/'>
-      
-        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
-      
-      <img no-lazy class='avatar' src='https://s2.loli.net/2023/05/17/RytQSDUMeJOkhGI.png'/>
-    </a>
-  
-  
-    <a class='title' href='/'>
-      仓鼠杂货铺
-    </a>
-  
-</div>
-
-  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
-</header>
-
-<div class='widgets'>
-  
-    
-      
-      
-<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%95%88%E6%9E%9C"><span class="toc-text">实现效果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Watchtower%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="toc-text">Watchtower配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2"><span class="toc-text">部署</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div></div>
-
-    
-  
-</div>
-<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://hamster1963.notion.site/239ba9c875e443619ba7ab6d30526cbd" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://talk.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
-
-    </aside>
-    <div class='l_main'>
-      
-
-      
-
-
-  <div class='bread-nav fs12'>
-  
-    
-    <div id='breadcrumb'>
-      <a class='cap breadcrumb' href='/'>主页</a>
-      <span class="sep"></span>
-      <a class='cap breadcrumb' href='/'>文章</a>
-      
-        <span class="sep"></span>
-        <a class="cap breadcrumb-link" href="/categories/Go/">Go</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/Go/Docker/">Docker</a>
-      
-    </div>
-    <div id='post-meta'>
-      发布于&nbsp;<time datetime='2023-05-23T16:00:00.000Z'>2023-05-24</time>
-    </div>
-  
-  </div>
-
-
-<article class='content md post reveal'>
-<h1 class="article-title"><span>利用watchtower实现Docker容器的自动更新部署</span></h1>
-<p>在前几篇文章中，讨论了利用Github Actions针对Go项目进行构建与打包镜像，而本文章关注于在简单场景下，单体应用的自动检测镜像版本并在获取到新版本时自动更新并清除旧版本的镜像，这对于测试环境或个人开发者来说较为方便，也可以减少手动更新所带来的时间成本。</p>
-<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/23/NVSKzd53wo4mfGu.jpg" style="zoom:50%;" />
-
-<p>在Github打包上传镜像至DockerHub后，部署服务的服务器通过watchtower进行检测更新并拉取镜像进行替换更新。完成后进行消息推送的通知。</p>
-<p>watchtower项目地址: <a target="_blank" rel="noopener" href="https://github.com/containrrr/watchtower">https://github.com/containrrr/watchtower</a></p>
-<h2 id="Watchtower配置文件"><a href="#Watchtower配置文件" class="headerlink" title="Watchtower配置文件"></a>Watchtower配置文件</h2><p>在所需部署的服务器上采用docker-compose启动watchtower服务，指定版本为1.5.3，在不指定的情况下，latest可能并不能拉取到最新版本的镜像。在<code>WATCHTOWER_NOTIFICATION_URL</code> 中，需要指明的是如果不是通过slack，discord等途径进行消息推送，而是通过http webhook的形式进行推送，则需要在URL前加上generic表明采用原生请求进行推送。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">watchtower:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">containrrr/watchtower:1.5.3</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/run/docker.sock:/var/run/docker.sock</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">--interval</span> <span class="number">15</span> <span class="string">--cleanup</span> <span class="string">nasnetwork_push_go-push-go-1</span> <span class="string">push_go_docker-push-go-1</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">WATCHTOWER_NOTIFICATION_REPORT:</span> <span class="string">&quot;true&quot;</span></span><br><span class="line">      <span class="attr">WATCHTOWER_NOTIFICATION_TITLE_TAG:</span> <span class="string">&quot;hamster&quot;</span></span><br><span class="line">      <span class="attr">WATCHTOWER_NOTIFICATION_URL:</span> <span class="string">&quot;generic+http://yourip:port/DockerUpdatePushCore&quot;</span></span><br><span class="line">      <span class="attr">WATCHTOWER_NOTIFICATION_DELAY:</span> <span class="number">5</span></span><br><span class="line">      <span class="attr">WATCHTOWER_NOTIFICATION_TEMPLATE:</span> <span class="string">|</span></span><br><span class="line">        &#123;&#123;<span class="bullet">-</span> <span class="string">if</span> <span class="string">.Report</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">          &#123;&#123;<span class="bullet">-</span> <span class="string">with</span> <span class="string">.Report</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">        &#123;&#123;<span class="string">len</span> <span class="string">.Scanned</span>&#125;&#125; <span class="string">Scanned,</span> &#123;&#123;<span class="string">len</span> <span class="string">.Updated</span>&#125;&#125; <span class="string">Updated,</span> &#123;&#123;<span class="string">len</span> <span class="string">.Failed</span>&#125;&#125; <span class="string">Failed</span></span><br><span class="line">              &#123;&#123;<span class="bullet">-</span> <span class="string">range</span> <span class="string">.Updated</span>&#125;&#125;</span><br><span class="line">        <span class="bullet">-</span> &#123;&#123;<span class="string">.Name</span>&#125;&#125; <span class="string">(&#123;&#123;.ImageName&#125;&#125;):</span> &#123;&#123;<span class="string">.CurrentImageID.ShortID</span>&#125;&#125; <span class="string">updated</span> <span class="string">to</span> &#123;&#123;<span class="string">.LatestImageID.ShortID</span>&#125;&#125;</span><br><span class="line">              &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">              &#123;&#123;<span class="bullet">-</span> <span class="string">range</span> <span class="string">.Fresh</span>&#125;&#125;</span><br><span class="line">        <span class="bullet">-</span> &#123;&#123;<span class="string">.Name</span>&#125;&#125; <span class="string">(&#123;&#123;.ImageName&#125;&#125;):</span> &#123;&#123;<span class="string">.State</span>&#125;&#125;</span><br><span class="line">            &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">            &#123;&#123;<span class="bullet">-</span> <span class="string">range</span> <span class="string">.Skipped</span>&#125;&#125;</span><br><span class="line">        <span class="bullet">-</span> &#123;&#123;<span class="string">.Name</span>&#125;&#125; <span class="string">(&#123;&#123;.ImageName&#125;&#125;):</span> &#123;&#123;<span class="string">.State</span>&#125;&#125;<span class="string">:</span> &#123;&#123;<span class="string">.Error</span>&#125;&#125;</span><br><span class="line">            &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">            &#123;&#123;<span class="bullet">-</span> <span class="string">range</span> <span class="string">.Failed</span>&#125;&#125;</span><br><span class="line">        <span class="bullet">-</span> &#123;&#123;<span class="string">.Name</span>&#125;&#125; <span class="string">(&#123;&#123;.ImageName&#125;&#125;):</span> &#123;&#123;<span class="string">.State</span>&#125;&#125;<span class="string">:</span> &#123;&#123;<span class="string">.Error</span>&#125;&#125;</span><br><span class="line">            &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">          &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">        &#123;&#123;<span class="bullet">-</span> <span class="string">else</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">          &#123;&#123;<span class="string">range</span> <span class="string">.Entries</span> <span class="string">-</span>&#125;&#125;&#123;&#123;<span class="string">.Message</span>&#125;&#125;&#123;&#123;<span class="string">&quot;\n&quot;</span>&#125;&#125;&#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br><span class="line">        &#123;&#123;<span class="bullet">-</span> <span class="string">end</span> <span class="string">-</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如不需要推送服务，则无需添加environment部分内容。</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">watchtower:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">containrrr/watchtower:1.5.3</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/var/run/docker.sock:/var/run/docker.sock</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">--interval</span> <span class="number">15</span> <span class="string">--cleanup</span> <span class="string">nasnetwork_push_go-push-go-1</span> <span class="string">push_go_docker-push-go-1</span></span><br></pre></td></tr></table></figure>
-
-<p>volumes指定系统下docker.sock的路径，而在command中进行绑定需要监测的容器与其他命令，在上述command中，</p>
-<p> <code>—interval</code> 指定每次检测的间隔秒数，15则为15秒</p>
-<p><code>—cleanup</code> 指定在更新容器后清理旧容器与旧镜像</p>
-<p><code>nasnetwork_push_go-push-go-1</code> 与 <code>push_go_docker-push-go-1</code> 都为容器名，可通过<code>docker ps</code> 进行查看，多个容器之间通过空格进行分割。</p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><p>首先通过 <code>docker-compose pull</code> 进行镜像的拉取</p>
-<p>拉取完成后，通过<code>docker-compose up -d</code> 进行watchtower的启动</p>
-<p>完成后即可通过查看日志获取检测结果信息。</p>
-<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/23/39TIpxOSBLDvVEY.png"></p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过这几篇文章，可以以较小的维护成本与开发成本构建一套属于自己的CI/CD流程，利用Docker容器轻松进行容器的分发与部署。后续会继续介绍统一消息推送中心以及k8s与k3s的构建与部署。</p>
-<p>之前的文章：</p>
-<p><a target="_blank" rel="noopener" href="https://buycoffee.top/2023/05/01/%E4%BD%BF%E7%94%A8GitHub%20Actions%E4%B8%BAGo%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E7%AE%80%E6%98%93CI:CD/">https://buycoffee.top/2023/05/01/使用GitHub Actions为Go项目实现简易CI:CD/</a></p>
-<p><a target="_blank" rel="noopener" href="https://buycoffee.top/2023/05/23/%E5%88%A9%E7%94%A8Github%20Actions%E4%B8%BAGo%E7%A8%8B%E5%BA%8F%E6%B7%BB%E5%8A%A0git%E4%B8%8E%E7%BC%96%E8%AF%91%E4%BF%A1%E6%81%AF/">https://buycoffee.top/2023/05/23/利用Github Actions为Go程序添加git与编译信息/</a></p>
-
-
-<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
-</div></section></div>
-
-</article>
-
-<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/05/23/%E5%88%A9%E7%94%A8Github%20Actions%E4%B8%BAGo%E7%A8%8B%E5%BA%8F%E6%B7%BB%E5%8A%A0git%E4%B8%8E%E7%BC%96%E8%AF%91%E4%BF%A1%E6%81%AF/">利用Github Actions为Go程序添加git与编译信息</a></div><div class="post-title fs14"><a href="/2023/06/18/%E5%8F%98%E6%88%90%E6%80%8E%E6%A0%B7%E7%9A%84%E5%A4%A7%E4%BA%BA/">上一篇：变成怎样的大人</a></div></section></div>
-
-
-
-
-
-
-  <div class='related-wrap md' id="comments">
-    <div class='cmt-title cap theme'>
-      快来参与讨论吧
-    </div>
-    <div class='cmt-body utterances'>
-      
-
-<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
-
-<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
-
-    </div>
-  </div>
-
-
-
-      
-<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
-<p><a href="https://xinyu.today/">@Hamster</a></p>
-</div></footer>
-
-      <div class='float-panel mobile-only blur' style='display:none'>
-  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
-    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
-  </button>
-</div>
-
-    </div>
-  </div>
-  <div class='scripts'>
-    <script type="text/javascript">
-  stellar = {
-    // 懒加载 css https://github.com/filamentgroup/loadCSS
-    loadCSS: (href, before, media, attributes) => {
-      var doc = window.document;
-      var ss = doc.createElement("link");
-      var ref;
-      if (before) {
-        ref = before;
-      } else {
-        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
-        ref = refs[refs.length - 1];
-      }
-      var sheets = doc.styleSheets;
-      if (attributes) {
-        for (var attributeName in attributes) {
-          if (attributes.hasOwnProperty(attributeName)) {
-            ss.setAttribute(attributeName, attributes[attributeName]);
-          }
-        }
-      }
-      ss.rel = "stylesheet";
-      ss.href = href;
-      ss.media = "only x";
-      function ready(cb) {
-        if (doc.body) {
-          return cb();
-        }
-        setTimeout(function () {
-          ready(cb);
-        });
-      }
-      ready(function () {
-        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
-      });
-      var onloadcssdefined = function (cb) {
-        var resolvedHref = ss.href;
-        var i = sheets.length;
-        while (i--) {
-          if (sheets[i].href === resolvedHref) {
-            return cb();
-          }
-        }
-        setTimeout(function () {
-          onloadcssdefined(cb);
-        });
-      };
-      function loadCB() {
-        if (ss.addEventListener) {
-          ss.removeEventListener("load", loadCB);
-        }
-        ss.media = media || "all";
-      }
-      if (ss.addEventListener) {
-        ss.addEventListener("load", loadCB);
-      }
-      ss.onloadcssdefined = onloadcssdefined;
-      onloadcssdefined(loadCB);
-      return ss;
-    },
-
-    // 从 butterfly 和 volantis 获得灵感
-    loadScript: (src, opt) => new Promise((resolve, reject) => {
-      var script = document.createElement('script')
-      script.src = src
-      if (opt) {
-        for (let key of Object.keys(opt)) {
-          script[key] = opt[key]
-        }
-      } else {
-        // 默认异步，如果需要同步，第二个参数传入 {} 即可
-        script.async = true
-      }
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    }),
-
-    // https://github.com/jerryc127/hexo-theme-butterfly
-    jQuery: (fn) => {
-      if (typeof jQuery === 'undefined') {
-        stellar.loadScript(stellar.plugins.jQuery).then(fn)
-      } else {
-        fn()
-      }
-    }
-  };
-  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
-  stellar.config = {
-    date_suffix: {
-      just: '刚刚',
-      min: '分钟前',
-      hour: '小时前',
-      day: '天前',
-      month: '个月前',
-    },
-  };
-
-  // required plugins (only load if needs)
-  stellar.plugins = {
-    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
-    sitesjs: '/js/plugins/sites.js',
-    friendsjs: '/js/plugins/friends.js',
-  };
-
-  // optional plugins
-  if ('true' == 'true') {
-    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+.l_body {
+  display: flex;
+  margin: auto;
+  padding: 0 var(--gap-l);
+  justify-content: center;
+}
+.l_body .l_left {
+  z-index: 8;
+  width: var(--width-left);
+  flex-shrink: 0;
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+}
+.l_body .l_main {
+  flex-shrink: 1;
+  flex-grow: 1;
+  width: 320px;
+  max-width: var(--width-main);
+}
+@media screen and (max-width: $device-tablet) {
+  .mobile-only {
+    display: block !important;
   }
-  if ('true' == 'true') {
-    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  .l_body {
+    padding: 0;
   }
-  if ('true' == 'true') {
-    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
+  .l_body .l_left {
+    position: fixed;
+    transform: translateX(-320px);
+    margin: 0;
+    left: 0;
+    background: var(--site-bg);
+    box-shadow: $boxshadow-card-float;
   }
-  if ('false' == 'true') {
-    stellar.plugins.preload = Object.assign({"enable":false,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  .l_body .l_main {
+    max-width: 100%;
   }
-</script>
-
-<!-- required -->
-
-  
-<script src="/js/main.js" async></script>
-
-
-
-<!-- optional -->
-
-  <script>
-  function utterances(){
-    if(!document.getElementById("utterances"))return;
-    setTimeout(function() {
-      var checkUtterances = setInterval(function () {
-        var el = document.getElementById("utterances");
-        if (!el) return
-        clearInterval(checkUtterances)
-        try {
-          el.innerHTML="";
-        } catch (error) {}
-        var script = document.createElement('script');
-        script.src = 'https://utteranc.es/client.js';
-        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
-        keys.forEach((key, i) => {
-          if (el.attributes[key] && el.attributes[key].value) {
-            script.setAttribute(key, el.attributes[key].value);
-          }
-        });
-        el.appendChild(script);
-       }, 200)
-    });
+  .l_body.mobile .l_left {
+    transition: transform 0.3s ease-out;
   }
-  utterances();
-</script>
-
-
-
-
-<!-- inject -->
-
-
-  </div>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
+  .l_body.mobile.sidebar .l_left {
+    transform: translateX(0px);
+  }
+}
