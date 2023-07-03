@@ -1,45 +1,400 @@
-.l_body {
-  display: flex;
-  margin: auto;
-  padding: 0 var(--gap-l);
-  justify-content: center;
-}
-.l_body .l_left {
-  z-index: 8;
-  width: var(--width-left);
-  flex-shrink: 0;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-}
-.l_body .l_main {
-  flex-shrink: 1;
-  flex-grow: 1;
-  width: 320px;
-  max-width: var(--width-main);
-}
-@media screen and (max-width: $device-tablet) {
-  .mobile-only {
-    display: block !important;
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>用Go构建一套网络监控系统 - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="为解决公司网络问题而编写的程序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用Go构建一套网络监控系统">
+<meta property="og:url" content="https://xinyu.today/2023/07/02/%E7%BD%91%E7%BB%9C%E7%9B%91%E6%8E%A7%20683f1c2b3b3d4a30bef2a2e52259eef2/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="为解决公司网络问题而编写的程序">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/VWzRsnPycH4lgDv.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/dTZ6DbB1ezIR2Yf.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/Xng9oQlBTIWxfP7.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/eF9zdUrW41JR85c.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/ozM1rmiFkXEt248.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/cOWbosgwY7z8XQx.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/03/4Sq3IfOmTg1AGLM.png">
+<meta property="article:published_time" content="2023-07-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-03T01:46:40.244Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/07/03/VWzRsnPycH4lgDv.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://s2.loli.net/2023/05/17/4vxnSlMUq5PZFt3.png">
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://s2.loli.net/2023/05/17/RytQSDUMeJOkhGI.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E8%83%8C%E6%99%AF"><span class="toc-text">项目背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84"><span class="toc-text">网络架构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E6%9E%84%E6%83%B3"><span class="toc-text">项目构想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E9%80%89%E5%9E%8B"><span class="toc-text">项目选型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%BC%80%E5%8F%91"><span class="toc-text">客户端开发</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1"><span class="toc-text">系统服务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%9E%84%E5%BB%BA"><span class="toc-text">后端构建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%91%E6%8E%A7%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E5%90%8E%E5%8F%91%E7%8E%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-text">监控一段时间后发现的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%90%8E%E8%AF%9D"><span class="toc-text">一些后话</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://hamster1963.notion.site/239ba9c875e443619ba7ab6d30526cbd" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://talk.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/Go/">Go</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2023-07-01T16:00:00.000Z'>2023-07-02</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>用Go构建一套网络监控系统</span></h1>
+<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>入职第二天，主管就马上下来了一个需求，监控终端的网络。原因是公司的网络很差，总是有同事反映网络很慢，钉钉不断断开重连，连接本地的群晖文件服务器也有问题，但目前的同事的应对手段主要就是重启路由器与服务器，总是没有从根源上解决问题，因此想找到一个可以稳定监控的方法。</p>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p>公司主营业务是跨境电商，因此在宽带的数量上达到了惊人的6条宽带，其中4条为专线宽带，不需要太多操心，其他例如运营，设计，开发与IT部门共用2条宽带，分别是电信的500M与联通的1000M宽带，从网络设备上来看就比较有意思了。</p>
+<ol>
+<li>联通光猫→蒲公英路由</li>
+<li>电信光猫→蒲公英路由</li>
+</ol>
+<p>采用了链路聚合的形式，将两条宽带结合为一条宽带进行使用，蒲公英后台设置中为双wan模式，由蒲公英对数据包的分发进行管理。</p>
+<p>而在AP方面，都采用了钉钉的C1路由器作为AP进行使用，接入钉钉的智能办公网络，在新人入职后可以很方便的直接在钉钉中点击智能办公室网络小程序进行网络的连接，进行打卡或是访问内网。</p>
+<p>从架构来看，主要就是在蒲公英端或者是在钉钉AP端出现了某些问题，需要对网络继续一个基本的测试后再进行问题的排查。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/VWzRsnPycH4lgDv.png"></p>
+<h2 id="项目构想"><a href="#项目构想" class="headerlink" title="项目构想"></a>项目构想</h2><p>想要持续监控终端网络的状况，主要还是得看到达员工端电脑上的网络速率，很多时候自己拿着去测觉得网络状态不错，但实际使用中由于不同电脑的各种硬件不同也可能会产生许多问题。</p>
+<p>马上第一个想法便是利用speedtest的功能，定时在终端上进行测速，再通过某个渠道将数据进行汇总，这样便可以很方便的看到不同设备中的速度了，也很容易看到问题的大概方向。因此花了一个整体架构的草图，非常的简单，便是在终端，例如手提或者台式机器上利用speedtest进行测速，再构建一个后端系统进行数据的汇总，架构就完成了。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/dTZ6DbB1ezIR2Yf.png"></p>
+<h2 id="项目选型"><a href="#项目选型" class="headerlink" title="项目选型"></a>项目选型</h2><p>简单的架构完成后，马上遇到的问题就是，如何利用speedtest以及用什么语言去构建安装在终端上的定时测速程序呢？</p>
+<p>首先第一个问题很快得到了解决，Ookla公司旗下的Speedtest工具为开发者提供了Speedtest CLI，这意味着我只需要去调用CLI并且获得数据即可完成测速的功能。简单了解指令后便设置用json格式获取测速CLI的输出以获得测速的数据。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/Xng9oQlBTIWxfP7.png"></p>
+<p>完整的命令为:</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">cmd := exec.Command(<span class="string">&quot;speed_cli/speedCLI/speedtest.exe&quot;</span>, <span class="string">&quot;--accept-gdpr&quot;</span>, <span class="string">&quot;--accept-license&quot;</span>, <span class="string">&quot;56634&quot;</span>,</span><br><span class="line">		<span class="string">&quot;--progress=yes&quot;</span>, <span class="string">&quot;--format=json&quot;</span>, <span class="string">&quot;--progress-update-interval=200&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>其中，”–accept-gdpr”与”–accept-license”可以跳过初次启动CLI需要输入YES同意的条款提示，</p>
+<p>“56634”则是指定的测速服务器id，可以使得结果比较具有统一性，后续主要为获取数据的配置，–format=json将CLI的输出配置为JSON格式，可以很好的用map的形式去管理测速数据。</p>
+<p>在语言选择方面，首先这门语言必须占用资源少，不会影响到终端的正常工作，其次语言应该具有良好的多架构适配性以可以安装在公司不同架构的电脑上，比如arm，amd64等，最后是最好可以编译为二进制文件，便于适配系统后台服务以及工具的分发。</p>
+<p>没错，在考虑了开发需求与开发成本中，结果很明显，使用Golang语言进行客户端测速程序的编写明显是一个很好的选择。同时在框架上，选用了后端的goframe框架进行魔改后可以方便的利用到框架内的例如缓存，HTTP客户端以及定时任务的功能，降低了很多的开发成本。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/eF9zdUrW41JR85c.png"></p>
+<p>核心的问题解决了，那就进行开发吧。</p>
+<h2 id="客户端开发"><a href="#客户端开发" class="headerlink" title="客户端开发"></a>客户端开发</h2><p>到了开发更多就是根据语言特性选择不同的模块去实现功能了。这里主要介绍定时任务这个功能。</p>
+<p>定时任务直接采用goframe框架中的gcron-定时任务进行构建。<code>gcron</code>模块提供了对定时任务的实现，支持类似<code>crontab</code>的配置管理方式，并支持最小粒度到<code>秒</code>的定时任务管理。</p>
+<p>使用起来非常的简单，只需要在客户端程序启动的时候，进行定时任务的注册即可。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">addSpeedCron</span><span class="params">(ctx context.Context, initData g.Map, timePattern <span class="keyword">string</span>)</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">	glog.Notice(ctx, <span class="string">&quot;开始定时测速服务&quot;</span>, timePattern)</span><br><span class="line">	_, err = gcron.AddSingleton(ctx, timePattern, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">		err := cli_utils.CmdCore.StartSpeedCmd(ctx, initData)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			glog.Error(ctx, <span class="string">&quot;定时测速服务失败: &quot;</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, <span class="string">&quot;Speed-Cron&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;添加定时测速服务失败: &quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>timePattern选择gcorn库中的预定义格式，默认为<code>@every 1h</code></p>
+<p>同时定时任务选择为单例模式，避免上次的测速未结束又进行了第二次测速造成测速CLI的冲突。</p>
+<p>在goframe项目启动中，定时任务便也启动，按照定义好的时间间隔进行测速命令的执行。</p>
+<p>为了后端对于客户端有足够的控制权限，timePattern内容与测速节点id是从后端进行获取的，这便需要客户端定时向后端获取最新的客户端配置，并且根据配置的内容再进行测速定时任务的创建。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">glog.Debug(ctx, <span class="string">&quot;开始初始化定时任务管理器&quot;</span>)</span><br><span class="line">	_, err = gcron.AddSingleton(ctx, <span class="string">&quot;@every 30s&quot;</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">		err := cron_utils.CronManage.GetConfigAndStart(ctx, initData)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			glog.Error(ctx, <span class="string">&quot;初始化定时任务管理器服务失败: &quot;</span>, err)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;, <span class="string">&quot;Cron-Manager&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;添加初始化定时任务管理器服务失败: &quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>采用配置定时任务管理器的形式进行测速定时任务的管理。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取测速定时任务</span></span><br><span class="line">	localSpeedCron := gcron.Search(<span class="string">&quot;Speed-Cron&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> localSpeedCron == <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Notice(ctx, <span class="string">&quot;本地不存在定时任务,添加Speed-Cron定时任务&quot;</span>)</span><br><span class="line">		err = addSpeedCron(ctx, initData, speedInterval)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			glog.Warning(ctx, <span class="string">&quot;添加Speed-Cron定时器失败&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		speedEntryPattern := reflect.ValueOf(localSpeedCron).Elem().FieldByName(<span class="string">&quot;schedule&quot;</span>).Elem().FieldByName(<span class="string">&quot;pattern&quot;</span>)</span><br><span class="line">		<span class="keyword">if</span> speedEntryPattern.String() != speedInterval &#123;</span><br><span class="line">			glog.Notice(ctx, <span class="string">&quot;更新Speed-Cron定时器&quot;</span>)</span><br><span class="line">			<span class="comment">// 更新定时任务</span></span><br><span class="line">			gcron.Stop(<span class="string">&quot;Speed-Cron&quot;</span>)</span><br><span class="line">			gcron.Remove(<span class="string">&quot;Speed-Cron&quot;</span>)</span><br><span class="line">			err = addSpeedCron(ctx, initData, speedInterval)</span><br><span class="line">			<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">				glog.Warning(ctx, <span class="string">&quot;更新Speed-Cron定时器失败&quot;</span>)</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			glog.Notice(ctx, <span class="string">&quot;Speed-Cron定时器无需更新&quot;</span>)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在获取配置后，将本地的配置与服务器的配置进行比对，如果有改变，则找到原本的测速定时任务进行销毁再根据新配置创建新的定时任务。在这里比较特别的是，在gcron中，定时任务在创建完成后，其中时间间隔字段是私有字段，不能从外部直接获取，因此这里采用反射对测速定时任务的结构体进行了私有字段的获取以用以与服务器配置进行比对。</p>
+<p>最后比较核心的模块便是与Speedtest CLI的交互了，十分的简单，这里直接给出完整的命令行信息获取函数。</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// StartSpeedCmd</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//	@dc: 开始测速命令行交互</span></span><br><span class="line"><span class="comment">//	@params:</span></span><br><span class="line"><span class="comment">//	@response:</span></span><br><span class="line"><span class="comment">//	@author: hamster   @date:2023/6/20 10:06:06</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *uCmdCore)</span> <span class="title">StartSpeedCmd</span><span class="params">(ctx context.Context, initData g.Map)</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">	cmd := CliUtils.CreateSpeedCmd()</span><br><span class="line">	<span class="keyword">if</span> cmd == <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;创建命令失败,获取测速节点失败&quot;</span>)</span><br><span class="line">		err = gerror.New(<span class="string">&quot;创建命令失败,获取测速节点失败&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 获取命令的标准输出管道</span></span><br><span class="line">	stdout, err := cmd.StdoutPipe()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;获取标准输出管道时发生错误:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 启动命令</span></span><br><span class="line">	err = cmd.Start()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;启动命令时发生错误:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> (</span><br><span class="line">		scanner             = bufio.NewScanner(stdout)</span><br><span class="line">		defaultBars         = Bar.InitDefaultBar()</span><br><span class="line">		uploadNetDataStruct = &amp;NetInfoUploadData&#123;&#125;</span><br><span class="line">	)</span><br><span class="line">	uploadNetDataStruct.Department = gconv.String(initData[<span class="string">&quot;department&quot;</span>])</span><br><span class="line">	uploadNetDataStruct.StaffName = gconv.String(initData[<span class="string">&quot;name&quot;</span>])</span><br><span class="line">	<span class="comment">// 持续获取输出</span></span><br><span class="line">	<span class="keyword">for</span> scanner.Scan() &#123;</span><br><span class="line">		<span class="comment">// 获取输出行</span></span><br><span class="line">		line := scanner.Bytes()</span><br><span class="line">		ok, err := CmdProgress.CmdCoreProgress(ctx, <span class="keyword">string</span>(line), defaultBars, uploadNetDataStruct)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			glog.Warning(ctx, <span class="string">&quot;处理命令行输出时发生错误:&quot;</span>, err)</span><br><span class="line">			<span class="keyword">return</span> err</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> ok &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 等待命令执行完成</span></span><br><span class="line">	err = cmd.Wait()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		glog.Warning(ctx, <span class="string">&quot;等待命令执行完成时发生错误:&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>核心就是创建了一个命令行的输出管道，通过<code>for scanner.Scan()</code> 的方式不断获取命令行的输出再进行处理。</p>
+<p>测速完成后，组装信息上传至后端即可。</p>
+<h2 id="系统服务"><a href="#系统服务" class="headerlink" title="系统服务"></a>系统服务</h2><p>在终端上进行，那就需要服务可以一直在后台运行，最好具有错误重启，开机自启动的功能，在对比了nvvm与winsw后，选用winsw进行Windows端系统服务的构建。</p>
+<p>配置十分简单，配置一些基础的信息，搭配github上的预编译文件加命令即可完成系统服务的注册与开启。</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>v0.1.0<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>My Go Application<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>This is a Windows service for running my Go application.<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">executable</span>&gt;</span>%BASE%\core_bin\speed_cron.exe<span class="tag">&lt;/<span class="name">executable</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">workingdirectory</span>&gt;</span>%BASE%\core_bin<span class="tag">&lt;/<span class="name">workingdirectory</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">arguments</span>&gt;</span>-department=IT -name=方大同<span class="tag">&lt;/<span class="name">arguments</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">logpath</span>&gt;</span>%BASE%\logs<span class="tag">&lt;/<span class="name">logpath</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">logmode</span>&gt;</span>roll<span class="tag">&lt;/<span class="name">logmode</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">onfailure</span> <span class="attr">action</span>=<span class="string">&quot;restart&quot;</span> <span class="attr">delay</span>=<span class="string">&quot;10 sec&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">onfailure</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>定义完成后利用<code>install</code>与<code>start</code>便可以将定时测速客户端注册为服务运行在系统后台</p>
+<h2 id="后端构建"><a href="#后端构建" class="headerlink" title="后端构建"></a>后端构建</h2><p>增删查改，建好数据库的表就可以了，再添加一个定时检测机器状态的定时任务即可。<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/ozM1rmiFkXEt248.png"></p>
+<h2 id="监控一段时间后发现的问题"><a href="#监控一段时间后发现的问题" class="headerlink" title="监控一段时间后发现的问题"></a>监控一段时间后发现的问题</h2><p>在部分网络状态不佳的设备上安装并等待一段数据的上报后，首先发现，怎么网段都不一样…</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/cOWbosgwY7z8XQx.png"></p>
+<p>在清一色的10网段中，怎么混入了172网段？！</p>
+<p>艰辛万苦的排查后，发现是某台钉钉的路由器错误地设置为了路由模式，造成DHCP直接变成又钉钉路由器进行，就造成了网段的不一样，而由于钉钉路由器在路由模式下性能很差…就造成了连到这台路由器的设备会出现网络卡顿，断线的情况。</p>
+<p>第一个问题解决了，还剩下一个就是网络总是定期有波动，从测速数据来看波动还是挺大的，最后从外部ip中发现了问题，发现蒲公英切换到电信500M的时候网络状态就十分不理想，解决办法很简单，把蒲公英路由器上电信那条网线拔了，对你没有听错….</p>
+<p>问题都解决了。</p>
+<h2 id="一些后话"><a href="#一些后话" class="headerlink" title="一些后话"></a>一些后话</h2><p>解决完这个问题后总感觉为了一碟醋包了一盘饺子…但是转念一想，没有这些大量数据的支撑，也很难通过测试发现问题的所在，同时在过程中也发现有一些是网卡硬件或者网线的问题造成协商速率只有100M，这些通过人工去测试当然也行，但是程序员就是懒嘛！让同事小手一点安装一下，等个半天看看数据再去处理，也是非常的轻松惬意，同时系统还可以接入比如预警，消息通知的第三方以完成更高程度监控自动化，也是非常灵活的！（嘴硬）</p>
+<p>最后谢谢你看到这里，希望其中的一些golang實作可以给你一些启发。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/03/4Sq3IfOmTg1AGLM.png"></p>
+
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/06/18/%E5%8F%98%E6%88%90%E6%80%8E%E6%A0%B7%E7%9A%84%E5%A4%A7%E4%BA%BA/">变成怎样的大人</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://xinyu.today/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
   }
-  .l_body {
-    padding: 0;
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
   }
-  .l_body .l_left {
-    position: fixed;
-    transform: translateX(-320px);
-    margin: 0;
-    left: 0;
-    background: var(--site-bg);
-    box-shadow: $boxshadow-card-float;
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
   }
-  .l_body .l_main {
-    max-width: 100%;
+  if ('false' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":false,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
   }
-  .l_body.mobile .l_left {
-    transition: transform 0.3s ease-out;
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
   }
-  .l_body.mobile.sidebar .l_left {
-    transform: translateX(0px);
-  }
-}
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>

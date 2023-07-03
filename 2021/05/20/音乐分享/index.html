@@ -1,45 +1,845 @@
-.l_body {
-  display: flex;
-  margin: auto;
-  padding: 0 var(--gap-l);
-  justify-content: center;
-}
-.l_body .l_left {
-  z-index: 8;
-  width: var(--width-left);
-  flex-shrink: 0;
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-}
-.l_body .l_main {
-  flex-shrink: 1;
-  flex-grow: 1;
-  width: 320px;
-  max-width: var(--width-main);
-}
-@media screen and (max-width: $device-tablet) {
-  .mobile-only {
-    display: block !important;
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>关于音乐的分享 - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="感谢走进我的世界">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于音乐的分享">
+<meta property="og:url" content="https://xinyu.today/2021/05/20/%E9%9F%B3%E4%B9%90%E5%88%86%E4%BA%AB/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="感谢走进我的世界">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/JmcKdktWyu6vSMe.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/sLEwe6X2G8Qcquh.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/tZK3hH2Cepar7AT.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/46ewkH5IDc9UsBX.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/YDlqBuKeSksMIOP.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/pvnMTQmGIF4wV36.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/D7XYSgJZR5OpByx.png">
+<meta property="og:image" content="https://s2.loli.net/2023/05/17/xB3QnjAqSsW15Do.png">
+<meta property="article:published_time" content="2021-05-20T04:13:42.000Z">
+<meta property="article:modified_time" content="2023-05-17T01:13:59.340Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="音乐">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/05/17/JmcKdktWyu6vSMe.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://s2.loli.net/2023/05/17/4vxnSlMUq5PZFt3.png">
+  
+<link rel="stylesheet" href="/assets/css/APlayer.min.css" class="aplayer-style-marker">
+<script src="/assets/js/APlayer.min.js" class="aplayer-script-marker"></script>
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://s2.loli.net/2023/05/17/RytQSDUMeJOkhGI.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E6%88%91%E5%96%9C%E6%AC%A2%E7%9A%84%E9%9F%B3%E4%B9%90%E9%A3%8E%E6%A0%BC"><span class="toc-text">关于我喜欢的音乐风格</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F%E6%97%B6%E5%80%99"><span class="toc-text">小时候</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E6%99%BA%E8%83%BD%E6%89%8B%E6%9C%BA"><span class="toc-text">前智能手机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%99%BA%E8%83%BD%E6%89%8B%E6%9C%BA%E6%97%B6%E4%BB%A3"><span class="toc-text">智能手机时代</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%89%E4%BB%96"><span class="toc-text">吉他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E5%A4%A7%E5%90%8C"><span class="toc-text">方大同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%96%AB%E6%83%85"><span class="toc-text">疫情</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%AC%E6%9C%88%E6%8E%A8%E8%8D%90%E6%AD%8C%E5%8D%95"><span class="toc-text">本月推荐歌单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BD%A9%E8%9B%8B"><span class="toc-text">彩蛋</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://hamster1963.notion.site/239ba9c875e443619ba7ab6d30526cbd" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://talk.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/%E9%9F%B3%E4%B9%90%E5%88%86%E4%BA%AB/">音乐分享</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2021-05-20T04:13:42.000Z'>2021-05-20</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>关于音乐的分享</span></h1>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> Hello大家好!!!</p>
+<p>这是我第一次尝试写下关于音乐分享的文章，很不成熟也很可能味如嚼蜡，谢谢您的谅解！！</p>
+<div class="tag-plugin note" color="blue"><div class="body"><p>推荐歌单仅仅是个人喜好哦！</p></div></div>
+
+<div class="tag-plugin note" color="dark"><div class="title"><strong>小提示</strong></div><div class="body"><p>全部歌曲都可以直接点击播放</p></div></div>
+
+<h2 id="关于我喜欢的音乐风格"><a href="#关于我喜欢的音乐风格" class="headerlink" title="关于我喜欢的音乐风格"></a>关于我喜欢的音乐风格</h2><h3 id="小时候"><a href="#小时候" class="headerlink" title="小时候"></a>小时候</h3><p>对于听歌这件事主要还是小时侯家庭的影响，在我还在母亲肚子里时我父母听到别人聊天时说到听音乐也是一种“胎教”，便两个人去了我们这个小城市的音响店买了一对立式的音响和一个功放机，开始在家里播放音乐，根据后来他们所说，最早期播放的大多是古典音乐，像莫扎特、巴赫的钢琴曲和交响曲，后来觉得有些乏味，便开始播放邓丽君，陈百强，张学友的歌曲。</p>
+
+        <div id="aplayer-cnZHNCij" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-cnZHNCij"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "月亮代表我的心",
+              author: "邓丽君",
+              url: "https://music.163.com/song/media/outer/url?id=228755.mp3",
+              pic: "",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+        <div id="aplayer-eXGzntKH" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-eXGzntKH"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "偏偏喜欢你",
+              author: "陈百强",
+              url: "https://music.163.com/song/media/outer/url?id=27874938.mp3",
+              pic: "",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+        <div id="aplayer-yopULsyA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-yopULsyA"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "吻别",
+              author: "张学友",
+              url: "https://music.163.com/song/media/outer/url?id=190449.mp3",
+              pic: "",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>如今在我家书柜还存放着当年的CD，但也有一部分在搬家的过程中丢失了。我父母在我小时候的印象里总是会抱着一些CD回来，放进CD机等待播放，印象最深刻的是两件事，第一个便是在CD机放进CD机后并不能马上播放歌曲，因为功放机还需要一点点的“热身”，叫做热机，功放在第一次开机时会有很清脆的滴答声，而真正热身好则是在大约2分钟后有一声非常清脆的滴答声，这个时候便可以按下CD机上的播放键了。</p>
+
+        <div id="aplayer-xfiDvEJM" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-xfiDvEJM"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Blue Bossa",
+              author: "Eddie Higgins",
+              url: "https://music.163.com/song/media/outer/url?id=1307049.mp3",
+              pic: "https://i.loli.net/2021/04/08/FufDKxeGiPJdXNU.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>第二件印象深刻的事情便是小学每次放学坐公交车回家，常常会在走进屋子前听到里面传来的乐器声或者唱歌的人声，闷闷的，而打开门走进去的一瞬间耳朵就会被音乐包裹，如同爱丽丝掉进树洞一般，而如果开门前没有听到，估计是我做错了什么，需要提前做好挨揍的准备。我的许多音乐的来源在智能手机出现之前都是来自于家里CD所播放的音乐，还有一部分来自于《猫和老鼠》中的交响乐（哈）。</p>
+
+        <div id="aplayer-BOrEaNYS" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-BOrEaNYS"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Tom and Jerry",
+              author: "Bradley",
+              url: "https://music.163.com/song/media/outer/url?id=25962464.mp3",
+              pic: "https://i.loli.net/2021/04/08/UwXvYIDgdoznLMi.png",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<h3 id="前智能手机"><a href="#前智能手机" class="headerlink" title="前智能手机"></a>前智能手机</h3><p>在智能手机之前其实还有一个小小的时代，我叫做前智能时代，印象最深的便是诺基亚的5230型号，有着如今智能手机基本的功能，但是操作起来并不是那么顺畅，屏幕是电容屏，需要用手指戳下去才能响应，也有了那个时候的特色就是触控笔。<br><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/JmcKdktWyu6vSMe.png" style="zoom:50%;" /></p>
+<p>但当时可以将音乐随身放在一个手机里已经让我非常震撼了，当时传输的方式主要是用线连接电脑后传输，或者用蓝牙传输，蓝牙在那个时候可谓称得上是真正的黑科技，在电脑上选择文件，选择蓝牙传输到手机，那时候音乐的文件，大多数是acc或者mp3的文件，256k的音质，蓝牙的传输速率那时大约200k左右，传一张专辑的歌曲还是需要一点点耐心的。</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/sLEwe6X2G8Qcquh.png" alt="XP的蓝牙"><br>诺基亚5230陪伴了我小学期间每天放学从学校到家里的一小段路，那时候也是网络歌手充斥网络的时代，和现在不同，那时候的网络歌手并没有一个完整的团队，很多时候只有自己录制自己唱歌就发到网上去了，虽然质量比不上如今的，但是很多经典的歌曲还是留了下来。尤其是经典的网恋歌曲….</p>
+
+        <div id="aplayer-ZWeKMIWc" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-ZWeKMIWc"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "爱到花开",
+              author: "戊道子",
+              url: "https://music.163.com/song/media/outer/url?id=5244681.mp3",
+              pic: "https://i.loli.net/2021/04/08/jMLB9rwEWPbCF48.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>我印象里在小学三四年级天天回家听的就是这首可谓是网恋元祖歌曲哈哈哈哈，以至于在很长一段时间内听到这首歌的前奏都有点起鸡皮疙瘩的感觉…..</p>
+<h3 id="智能手机时代"><a href="#智能手机时代" class="headerlink" title="智能手机时代"></a>智能手机时代</h3><p>在初一的时候我真正的迎来了我的第一台智能手机，那便是大名鼎鼎(以前)的台湾手机厂商HTC(火腿肠)的Incredible S，出厂预装的是安卓2.2.</p>
+<p><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/tZK3hH2Cepar7AT.png" alt="htc G11"></p>
+<p>第一个下载的软件除了QQ便是QQ音乐了，还记得第一次打开QQ音乐，主页上扑面而来的帅气男人，那肯定就是周董了</p>
+
+        <div id="aplayer-eGjPNcuS" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-eGjPNcuS"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "说好的幸福呢",
+              author: "周杰伦",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/周杰伦-说好的幸福呢.mp3",
+              pic: "https://i.loli.net/2021/04/08/aILZKwO18o92p3T.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+        <div id="aplayer-mrGrEjoY" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-mrGrEjoY"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "花海",
+              author: "周杰伦",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/周杰伦-花海.mp3",
+              pic: "https://i.loli.net/2021/04/08/aILZKwO18o92p3T.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+        <div id="aplayer-kIzfHvJx" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-kIzfHvJx"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "给我一首歌的时间",
+              author: "周杰伦",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/周杰伦-给我一首歌的时间.mp3",
+              pic: "https://i.loli.net/2021/04/08/aILZKwO18o92p3T.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>也是在听过周董的歌之后，我对于自己所喜欢的音乐才有了一个初步的理解，那时的我喜欢干净的音乐，在歌曲里各种乐器的位置摆放合理，不会互相打架，用尽可能少的乐器演绎出丰富的听觉效果，而在那个时候，听得最多的除了周董，便是李荣浩了。</p>
+<p>第一次认识李荣浩是在电台里，在FM102.2深夜12点开始的节目叫做《千里共良宵》，某一次广告前的过场音乐直接抓住了我的耳朵，13年的听歌识曲并不完善，我只能尽可能的记住歌词，然后再去搜索，那时候我印象最深的一句便是“越勇敢越孤单”，这一句便让我认识了李荣浩。</p>
+
+        <div id="aplayer-KYBWKkLs" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-KYBWKkLs"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "都一样",
+              author: "李荣浩",
+              url: "https://music.163.com/song/media/outer/url?id=27731172.mp3",
+              pic: "https://i.loli.net/2021/04/08/X6V1nOjuELw3pSF.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>那段时间向身边的同学推荐李荣浩，他们的表情就像李荣浩的眼睛一样，眯成了一条缝，那个时候没有抖音，大家听歌还是有耐心听完一整首的，大家所喜欢的风格也不同，但李荣浩在那个时候可谓时流行音乐的一个异类，前有R&amp;B教父陶喆、周董还有陈奕迅三座大山，那时候很多人说李荣浩是周杰伦加陈奕迅，也有人说李荣浩的音乐千篇一律，但是李荣浩确实闯出了一条路来。</p>
+
+        <div id="aplayer-lIlVKqwS" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-lIlVKqwS"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "不搭",
+              author: "李荣浩",
+              url: "https://music.163.com/song/media/outer/url?id=29764563.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/14ce36d3d539b6009f46967be350352ac75cb776.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>李荣浩最厉害的对于和声的运用，这与他多年的幕后经验是紧密相关的，许多歌曲旋律并不复杂但和声的运用使得歌曲增彩不少。</p>
+<h3 id="吉他"><a href="#吉他" class="headerlink" title="吉他"></a>吉他</h3><p>在初三中考完的假期内我拥有了我的第一把吉他，也就是这个时候我开始真正的不仅仅去听音乐，更想要去触碰音乐。</p>
+
+        <div id="aplayer-GVdunsFC" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-GVdunsFC"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "拥抱",
+              author: "五月天",
+              url: "https://music.163.com/song/media/outer/url?id=386542.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/a8014c086e061d95bcc46a0c79f40ad162d9ca00.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>五月天的拥抱是我学习的第一首歌曲，当时是一位朋友的朋友在唱吧上唱了这一首并且分享给了我，当时第一次听到我便下定决心要学会这一首拥抱，第二天打开吉他教材，噢～好家伙，第一页就是这首歌的谱子，也就是在这样的机缘巧合下我慢慢开始学习一首又一首的歌，我也开始接触指弹。</p>
+
+        <div id="aplayer-rxRHQgmo" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-rxRHQgmo"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "LOVIN' YOU",
+              author: "押尾コータロー",
+              url: "https://music.163.com/song/media/outer/url?id=22822506.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/s4716396.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>押尾桑的许多歌曲都可谓是吉他指弹入门的必练曲，到并不是因为多简单，而是因为实在是太好听了，虽然许多人都认为押尾的歌曲的难度稍低，但是如果想要完整流畅地弹奏下来还是需要多年的苦练的。而上面这一首LOVIN’ YOU则是我第一首学会弹奏的指弹曲，直到现在我也不敢说我已经可以完全无压力地弹奏下来了，每一次弹奏都为这精致的编排所震撼。</p>
+<p>在押尾桑后我开始了解更多来自世界各地的指弹大师，首先当然是来自澳洲的<em>Tommy Emmanuel</em>，还记得第一次听到close to you的弹奏时，我根本不相信这是一把吉他所能创造的效果，各种技巧和和弦都是为了旋律服务的感觉实在是太棒了。也让我对吉他的理解更加的深刻。</p>
+
+        <div id="aplayer-fAnvKQly" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-fAnvKQly"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Since We Met",
+              author: "Tommy Emmanuel",
+              url: "https://music.163.com/song/media/outer/url?id=2002030.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/s3681710.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/46ewkH5IDc9UsBX.png" alt="Tommy Emmanuel" style="zoom:50%;" />
+
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/YDlqBuKeSksMIOP.png" alt="Tommy Emmanuel" style="zoom:50%;" />
+
+<p>当然除了Tommy Emmanuel我还尤其喜欢来自日本的伍伍慧，他极具天赋的编曲以及各种古典技巧的融合使得他的曲子听起来尤其的活泼以及有生气，他所改编的爵士名曲<em>Moon River</em>不仅仅尤其地温暖，而且其中的改编更让人如痴如醉。</p>
+
+        <div id="aplayer-zZHYpoGT" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-zZHYpoGT"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "Moon River",
+              author: "伍伍慧",
+              url: "https://music.163.com/song/media/outer/url?id=26450089.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/s27996751.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<h3 id="方大同"><a href="#方大同" class="headerlink" title="方大同"></a>方大同</h3><p>终于在高中，我开始认识方大同。</p>
+
+        <div id="aplayer-ZCRyvhiI" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-ZCRyvhiI"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "红豆",
+              author: "方大同",
+              url: "https://m10.music.126.net/20210517202811/6dd994d699da3e242260e335e3880d91/ymusic/ff10/edf4/18cd/a81822d7d51e1de5206569eb09576e58.mp3",
+              pic: "https://s2.loli.net/2023/05/17/o4O1ueAUaZcvn56.png",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+
+<p>“有时候　有时候</p>
+<p>我会相信一切有尽头</p>
+<p>相聚离开都有时候</p>
+<p>没有什么会永垂不朽</p>
+<p>可是我　有时候</p>
+<p>宁愿选择留恋不放手</p>
+<p>等到风景都看透</p>
+<p>也许你会陪我看细水长流</p>
+<p>”</p>
+<p>那天晚上是我第一次认真听方大同的歌，回到宿舍我马上去向朋友借了一把吉他，开始弹奏方大同的红豆。也是第一次我从心底感觉原来弹唱也可以这么酷，吉他的编排可以如此抓耳朵。我一直弹一直弹，我舍友久违地说了一句：真好听啊。在那个时候我知道方大同这个男人以后应该会陪我很久很久了。</p>
+<p>第二天在秋游的路上我也一直在耳机里不断地循环，回来的路上也是。</p>
+<p>第二天开始我开始听方大同的其他歌曲，刚开始这并不是一个很顺畅的过程，以往的流行歌曲经验对于大同的歌曲来说并不管用，无论是旋律，和声，和弦，对于我来说都完全是崭新的，我还记得第一次听《暖》，并不觉得这首歌是我的菜，直到两天后第二次听，才发现，噢！太棒了！</p>
+
+        <div id="aplayer-FCvdjqNk" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-FCvdjqNk"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "暖",
+              author: "方大同",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/方大同-暖.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/9825bc315c6034a82b7f9283c313495409237616.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>大同的许多歌曲都是如此，有着难以言喻的前瞻性，让你在每一次重播时都觉得，这首歌太潮了！</p>
+<p>也是因为大同，我对于音乐的理解更加深入，大同的许多音乐灵感其实是来自于他小时候所听的黑人音乐，爵士乐，放克，还有各种灵魂乐，布鲁斯以及R&amp;B。也使得他的歌曲不仅仅多元，而且极具创造性，各种即兴信手拈来。</p>
+<p>也是在那个时候开始我开始收集方大同的专辑，像让大同的声音在音响上呈现，我第一张真正意义上的方大同发行专辑便是《橙月》。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/pvnMTQmGIF4wV36.png" alt="Orange Moon" style="zoom: 50%;" />
+
+
+        <div id="aplayer-JlAbDjAr" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-JlAbDjAr"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "小小虫",
+              author: "方大同",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/方大同-小小虫.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/9d82d158ccbf6c81d15b405dbc3eb13533fa4012.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>随着听大同的歌曲越来越来，我发现我的耳朵也变刁了，尤其是听到流行歌曲的时候，不自主地会与大同的歌曲进行比较，如果这首歌是完完全全在套路之内的，那我大可能就把这首歌给pass掉，但如果有意料之外的旋律或者和弦就会马上吸引到我。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/D7XYSgJZR5OpByx.png" alt="the show"  />
+
+<h3 id="疫情"><a href="#疫情" class="headerlink" title="疫情"></a>疫情</h3><p>疫情期间我开始花大量的时间去听歌，一天的时间都泡在音乐App中，巧合的是，在某一个晚上我打开YouTube，首页给我推荐了一张合辑，名字叫做睡前R&amp;B，封面是昏暗的房间，地上摆放着各种唱片，点击，便让我发现了这一位宝藏歌手。</p>
+
+        <div id="aplayer-JmoCNgem" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-JmoCNgem"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "easy",
+              author: "Mac Ayres",
+              url: "https://music.163.com/song/media/outer/url?id=519943092.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/s29520620.jpeg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<p>许多人评价Mac Ayres是如今被远远低估的R&amp;B歌手，我也很赞同，但他才23岁，未来可期。</p>
+<p>这首歌还在被我用在了歌手大赛的复赛中（由于英语发音根本不标准被评委吐槽，但如果叫我评选2020年我的年度单曲，我会毫不犹豫地选择这首歌）</p>
+<p>在疫情中我还认识了另外一位“老师”，那便是来自台湾的“李友廷老师”了</p>
+<p>李友廷以极强的吉他演奏能力和极具个人风格的作品在台湾的综艺节目声林之王第一季夺得冠军，并在2020年底终于推出了首张个人专辑《如果你也爱我就好了》，听就好了。</p>
+
+        <div id="aplayer-ABKqUoXZ" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;width:100%;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-ABKqUoXZ"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "直到我遇见了你",
+              author: "李友廷",
+              url: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/musicstore/李友廷-直到我遇见了你.mp3",
+              pic: "https://cdn.jsdelivr.net/gh/hamster1963/photostore/img/s33763909.jpg",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
+
+<h2 id="本月推荐歌单"><a href="#本月推荐歌单" class="headerlink" title="本月推荐歌单"></a>本月推荐歌单</h2><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/05/17/xB3QnjAqSsW15Do.png"  />
+
+
+<p>@</p>
+<p>@@</p>
+<p>@@@</p>
+<p>@@@@</p>
+<p>@@@@@</p>
+<p>@@@@@@</p>
+<p>@@@@@@@</p>
+<p>@@@@@@@@</p>
+<p>@@@@@@@@@</p>
+<h2 id="彩蛋"><a href="#彩蛋" class="headerlink" title="彩蛋"></a>彩蛋</h2><p>谢谢你的阅读</p>
+<p>致敬那些漫漫长夜</p>
+<p>谢谢ni。</p>
+<p>2021.4.11</p>
+
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2021/05/18/%E4%BB%8A%E6%97%A5%E6%A0%A1%E5%9B%AD%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%86%99%E8%BE%85%E5%AF%BC%E5%91%98%E4%BF%A1%E6%81%AF%E8%84%9A%E6%9C%AC/">今日校园自动填写表单信息脚本</a></div><div class="post-title fs14"><a href="/2023/04/15/%E5%AE%9E%E7%8E%B0%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%8A%82%E7%82%B9%E5%88%86%E4%BA%AB%20/">上一篇：家庭负载均衡节点部署</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://xinyu.today/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
   }
-  .l_body {
-    padding: 0;
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
   }
-  .l_body .l_left {
-    position: fixed;
-    transform: translateX(-320px);
-    margin: 0;
-    left: 0;
-    background: var(--site-bg);
-    box-shadow: $boxshadow-card-float;
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
   }
-  .l_body .l_main {
-    max-width: 100%;
+  if ('false' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":false,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
   }
-  .l_body.mobile .l_left {
-    transition: transform 0.3s ease-out;
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
   }
-  .l_body.mobile.sidebar .l_left {
-    transform: translateX(0px);
-  }
-}
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
