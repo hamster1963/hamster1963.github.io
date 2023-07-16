@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 5.4.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>搭配GitHub Actions为Release增加Changelog - 仓鼠杂货铺</title>
+
+  
+    <meta name="description" content="为项目创建好看的Changelog">
+<meta property="og:type" content="article">
+<meta property="og:title" content="搭配GitHub Actions为Release增加Changelog">
+<meta property="og:url" content="https://buycoffee.top/2023/07/16/%E6%90%AD%E9%85%8DGitHub%20Actions%E4%B8%BARelease%E5%A2%9E%E5%8A%A0Changelog%202b9af1cd39284deb8dcae3d3720abf46/index.html">
+<meta property="og:site_name" content="仓鼠杂货铺">
+<meta property="og:description" content="为项目创建好看的Changelog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2023/07/16/kRPThvUOj614wFM.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/16/1LBJonWKgNpUmZH.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/16/dgH8boyW4SRMOQN.png">
+<meta property="og:image" content="https://s2.loli.net/2023/07/16/G4mEyViUQHzuSR7.png">
+<meta property="article:published_time" content="2023-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-16T04:56:46.228Z">
+<meta property="article:author" content="Hamster">
+<meta property="article:tag" content="GitHub">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://s2.loli.net/2023/07/16/kRPThvUOj614wFM.png">
+  
+  
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+    <link rel="shortcut icon" type='image/x-icon' href="https://s2.loli.net/2023/05/17/4vxnSlMUq5PZFt3.png">
+  
+</head>
+
+<body>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left'>
+    
+
+<header class='header'>
+  <div class='logo-wrap'>
+  
+    <a class='avatar' href='/about/'>
+      
+        <img no-lazy class='bg' style='opacity:0' src='https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.2/avatar/round/rainbow64@3x.webp'/>
+      
+      <img no-lazy class='avatar' src='https://s2.loli.net/2023/05/17/RytQSDUMeJOkhGI.png'/>
+    </a>
+  
+  
+    <a class='title' href='/'>
+      仓鼠杂货铺
+    </a>
+  
+</div>
+
+  <nav class="menu dis-select"><a class="nav-item active" href="/">文章</a><a class="nav-item" href="/wiki/">项目</a><a class="nav-item" href="/about/">关于</a></nav>
+</header>
+
+<div class='widgets'>
+  
+    
+      
+      
+<div class="widget-wrap" id="toc"><div class="widget-header h4 dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14 post"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%95%88%E6%9E%9C"><span class="toc-text">最终效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%89%8D%E5%B8%B8%E8%A7%81%E7%9A%84Changelog%E8%87%AA%E5%8A%A8%E5%8C%96%E5%B7%A5%E5%85%B7"><span class="toc-text">目前常见的Changelog自动化工具</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E6%96%B9%E5%BC%8F"><span class="toc-text">配置方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEGitHub-Actions"><span class="toc-text">配置GitHub Actions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E5%90%8E"><span class="toc-text">最后</span></a></li></ol></div></div></div>
+
+    
+  
+</div>
+<footer class="footer"><div class="social-wrap dis-select"><a class="social" href="https://hamster1963.notion.site/239ba9c875e443619ba7ab6d30526cbd" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/25678f144c438.svg"/></a><a class="social" href="https://github.com/hamster1963/" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/08a41b181ce68.svg"/></a><a class="social" href="https://music.163.com/#/user/home?id=1671539900" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/cf1ae151f9e83.svg"/></a><a class="social" href="https://memos.xinyu.today" target="_blank" rel="external nofollow noopener noreferrer"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://cdn.jsdelivr.net/gh/cdn-x/placeholder@1.0.1/social/8411ed322ced6.svg"/></a></div></footer>
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+  <div class='bread-nav fs12'>
+  
+    
+    <div id='breadcrumb'>
+      <a class='cap breadcrumb' href='/'>主页</a>
+      <span class="sep"></span>
+      <a class='cap breadcrumb' href='/'>文章</a>
+      
+        <span class="sep"></span>
+        <a class="cap breadcrumb-link" href="/categories/GitHub/">GitHub</a>
+      
+    </div>
+    <div id='post-meta'>
+      发布于&nbsp;<time datetime='2023-07-15T16:00:00.000Z'>2023-07-16</time>
+    </div>
+  
+  </div>
+
+
+<article class='content md post reveal'>
+<h1 class="article-title"><span>搭配GitHub Actions为Release增加Changelog</span></h1>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在浏览GitHub上许多知名的社区项目时，总能在Release中看到各种不同的Changelog，其中通常包含这代码的提交信息，有一些则是重大的更新点，其中有人工进行Changelog编写的，也有许多是使用自动化工具生成的。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/16/kRPThvUOj614wFM.png" style="zoom:25%;" />
+
+<p>Goframe项目的Changelog</p>
+<p>于是我们尝试在Speed-Cron项目中引入自动化的Changelog生成工具，帮助我们生成好看又实用的Changelog。</p>
+<h3 id="最终效果"><a href="#最终效果" class="headerlink" title="最终效果"></a>最终效果</h3><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/16/1LBJonWKgNpUmZH.png" style="zoom: 25%;" />
+
+<h2 id="目前常见的Changelog自动化工具"><a href="#目前常见的Changelog自动化工具" class="headerlink" title="目前常见的Changelog自动化工具"></a>目前常见的Changelog自动化工具</h2><p>目前社区中有十分多不同风格与用法的Changelog自动化生成工具，比如npm中的 <strong><strong>auto-changelog</strong></strong> ，或者GitHub官方的<strong>Automatically generated release notes</strong>，而今天选用的，则是一款在GitHub上知名度较高的 <strong><a target="_blank" rel="noopener" href="https://github.com/orhun/git-cliff">git-cliff</a> ，git-cliff</strong> 是用rust语言编写的自动化生产变更日志的工具，可以通过下载二进制文件在本地生成 Changelog ，或者引入到GitHub Actions中进行使用。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/16/dgH8boyW4SRMOQN.png" style="zoom:25%;" />
+
+<p>在本项目中，我们将利用git-cliff官方的Actions套件为Release阶段生成Changelog。</p>
+<h2 id="配置方式"><a href="#配置方式" class="headerlink" title="配置方式"></a>配置方式</h2><p><a target="_blank" rel="noopener" href="https://git-cliff.org/docs/github-actions/git-cliff-action">https://git-cliff.org/docs/github-actions/git-cliff-action</a></p>
+<p>在官方的文档中对于如何在Actions中使用git-cliff有很详细的介绍。通过在workflow文件中引入并配置git-cliff Actions即可。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Check</span> <span class="string">out</span> <span class="string">repository</span></span><br><span class="line">  <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">fetch-depth:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Generate</span> <span class="string">a</span> <span class="string">changelog</span></span><br><span class="line">  <span class="attr">uses:</span> <span class="string">orhun/git-cliff-action@v2</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">config:</span> <span class="string">cliff.toml</span></span><br><span class="line">    <span class="attr">args:</span> <span class="string">--verbose</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="attr">OUTPUT:</span> <span class="string">CHANGELOG.md</span></span><br></pre></td></tr></table></figure>
+
+<p>可以使用默认的cliff.toml，或者我们自定义更符合我们需求的git-cliff配置文件。</p>
+<img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://s2.loli.net/2023/07/16/G4mEyViUQHzuSR7.png" style="zoom: 50%;" />
+
+<p>在项目中，我们创建一个git-cliff文件夹以用来存放git-cliff的配置文件，现在直接先摆上完整的配置文件。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># git-cliff ~ configuration file</span></span><br><span class="line"><span class="comment"># https://git-cliff.org/docs/configuration</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># Lines starting with &quot;#&quot; are comments.</span></span><br><span class="line"><span class="comment"># Configuration options are organized into tables and keys.</span></span><br><span class="line"><span class="comment"># See documentation for more information on available options.</span></span><br><span class="line"></span><br><span class="line">[<span class="string">changelog</span>]</span><br><span class="line"><span class="comment"># changelog header</span></span><br><span class="line"><span class="string">header</span> <span class="string">=</span> <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"># Changelog\n</span></span><br><span class="line"><span class="string">&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment"># template for the changelog body</span></span><br><span class="line"><span class="comment"># https://tera.netlify.app/docs/</span></span><br><span class="line"><span class="string">body</span> <span class="string">=</span> <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">&#123;% if version %&#125;\</span></span><br><span class="line"><span class="string">    ## Release <span class="template-variable">&#123;&#123; version | trim_start_matches(pat=&quot;v&quot;) &#125;&#125;</span> - <span class="template-variable">&#123;&#123; timestamp | date(format=&quot;%Y-%m-%d&quot;) &#125;&#125;</span></span></span><br><span class="line"><span class="string">&#123;% else %&#125;\</span></span><br><span class="line"><span class="string">    ## [unreleased]</span></span><br><span class="line"><span class="string">&#123;% endif %&#125;\</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#123;% for group, commits in commits | group_by(attribute=&quot;</span><span class="string">group&quot;)</span> <span class="string">%&#125;</span></span><br><span class="line">    <span class="comment">### &#123;&#123; group | upper_first &#125;&#125;</span></span><br><span class="line">    &#123;<span class="string">%</span> <span class="string">for</span> <span class="string">commit</span> <span class="string">in</span> <span class="string">commits</span> <span class="string">%</span>&#125;</span><br><span class="line">        <span class="bullet">-</span> &#123;&#123; <span class="string">commit.message</span> <span class="string">|</span> <span class="string">upper_first</span> &#125;&#125; <span class="string">([&#123;&#123;</span> <span class="string">commit.id</span> <span class="string">|</span> <span class="string">truncate(length=7,</span> <span class="string">end=&quot;&quot;)</span> <span class="string">&#125;&#125;](https://github.com/hamster1963/Speed-Cron/commit/&#123;&#123;</span> <span class="string">commit.id</span> <span class="string">&#125;&#125;))\</span></span><br><span class="line">          &#123;<span class="string">%</span> <span class="string">for</span> <span class="string">footer</span> <span class="string">in</span> <span class="string">commit.footers</span> <span class="string">-%</span>&#125;</span><br><span class="line">            <span class="string">,</span> &#123;&#123; <span class="string">footer.token</span> &#125;&#125;&#123;&#123; <span class="string">footer.separator</span> &#125;&#125;&#123;&#123; <span class="string">footer.value</span> &#125;&#125;<span class="string">\</span></span><br><span class="line">          &#123;<span class="string">%</span> <span class="string">endfor</span> <span class="string">%</span>&#125;<span class="string">\</span></span><br><span class="line">    &#123;<span class="string">%</span> <span class="string">endfor</span> <span class="string">%</span>&#125;</span><br><span class="line">&#123;<span class="string">%</span> <span class="string">endfor</span> <span class="string">%</span>&#125;<span class="string">\n</span></span><br><span class="line"><span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"># remove the leading and trailing whitespace from the template</span></span><br><span class="line"><span class="string">trim = true</span></span><br><span class="line"><span class="string"># changelog footer</span></span><br><span class="line"><span class="string">footer = &quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[git]</span></span><br><span class="line"><span class="string"># parse the commits based on https://www.conventionalcommits.org</span></span><br><span class="line"><span class="string">conventional_commits = true</span></span><br><span class="line"><span class="string"># filter out the commits that are not conventional</span></span><br><span class="line"><span class="string">filter_unconventional = true</span></span><br><span class="line"><span class="string"># process each line of a commit as an individual commit</span></span><br><span class="line"><span class="string">split_commits = true</span></span><br><span class="line"><span class="string"># regex for preprocessing the commit messages</span></span><br><span class="line"><span class="string">commit_preprocessors = [</span></span><br><span class="line"><span class="string">  &#123; pattern = &#x27;\((\w+\s)?#([0-9]+)\)&#x27;, replace = &quot;</span><span class="string">([#$&#123;2&#125;](https://github.com/orhun/git-cliff/issues/$&#123;2&#125;))&quot;</span> <span class="string">&#125;,</span></span><br><span class="line"><span class="string">]</span></span><br><span class="line"><span class="comment"># regex for parsing and grouping commits</span></span><br><span class="line"><span class="string">commit_parsers</span> <span class="string">=</span> [</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^feat&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 0 --&gt;⛰️  Features&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^fix&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 1 --&gt;🐛 Bug Fixes&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^doc&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 3 --&gt;📚 Documentation&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^perf&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 4 --&gt;⚡ Performance&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^refactor&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 2 --&gt;🚜 Refactor&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^style&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 5 --&gt;🎨 Styling&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^test&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 6 --&gt;🧪 Testing&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(release\\): prepare for&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(pr\\)&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(pull\\)&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 7 --&gt;⚙️ Miscellaneous Tasks&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">body</span> <span class="string">=</span> <span class="string">&quot;.*security&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 8 --&gt;🛡️ Security&quot;</span> &#125;,</span><br><span class="line">]</span><br><span class="line"><span class="comment"># protect breaking changes from being skipped due to matching a skipping commit_parser</span></span><br><span class="line"><span class="string">protect_breaking_commits</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line"><span class="comment"># filter out the commits that are not matched by commit parsers</span></span><br><span class="line"><span class="string">filter_commits</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line"><span class="comment"># glob pattern for matching git tags</span></span><br><span class="line"><span class="string">tag_pattern</span> <span class="string">=</span> <span class="string">&quot;v[0-9]*&quot;</span></span><br><span class="line"><span class="comment"># regex for skipping tags</span></span><br><span class="line"><span class="string">skip_tags</span> <span class="string">=</span> <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="comment"># regex for ignoring tags</span></span><br><span class="line"><span class="string">ignore_tags</span> <span class="string">=</span> <span class="string">&quot;v.*-beta.*&quot;</span></span><br><span class="line"><span class="comment"># sort the tags topologically</span></span><br><span class="line"><span class="string">topo_order</span> <span class="string">=</span> <span class="literal">false</span></span><br><span class="line"><span class="comment"># sort the commits inside sections by oldest/newest order</span></span><br><span class="line"><span class="string">sort_commits</span> <span class="string">=</span> <span class="string">&quot;oldest&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以在配置文件中看出，主要的配置块分为Changelog部分与GitHub部分，分别对Changelog的格式以及读取GitHub的行为进行配置。</p>
+<p>在Changelog部分，我们将每一行的commit都看做一个独立的变更（虽然在多人项目中不太建议）。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># process each line of a commit as an individual commit</span></span><br><span class="line"><span class="string">split_commits</span> <span class="string">=</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>并且在变更的末尾附上对应的commit_id，方便直接在Changelog页面可以直接点击跳转到对应的commit变更对比页面中。</p>
+<p>在变更类别中，分为:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">commit_parsers</span> <span class="string">=</span> [</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^feat&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 0 --&gt;⛰️  Features&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^fix&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 1 --&gt;🐛 Bug Fixes&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^doc&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 3 --&gt;📚 Documentation&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^perf&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 4 --&gt;⚡ Performance&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^refactor&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 2 --&gt;🚜 Refactor&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^style&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 5 --&gt;🎨 Styling&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^test&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 6 --&gt;🧪 Testing&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(release\\): prepare for&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(pr\\)&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore\\(pull\\)&quot;</span>, <span class="string">skip</span> <span class="string">=</span> <span class="literal">true</span> &#125;,</span><br><span class="line">  &#123; <span class="string">message</span> <span class="string">=</span> <span class="string">&quot;^chore&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 7 --&gt;⚙️ Miscellaneous Tasks&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="string">body</span> <span class="string">=</span> <span class="string">&quot;.*security&quot;</span>, <span class="string">group</span> <span class="string">=</span> <span class="string">&quot;&lt;!-- 8 --&gt;🛡️ Security&quot;</span> &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>那么多类，通过正则表达式进行匹配分类到不同的类别中。</p>
+<p>对于版本号的格式：正式分发的版本采用<code>v.0.0.1</code>的格式进行,如为测试版则是<code>v0.0.1-beta.1</code>的版本格式。因此需要在tag_pattern与ignore-tags中定义区分正式版与测试版本的正则表达式。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># glob pattern for matching git tags</span></span><br><span class="line"><span class="string">tag_pattern</span> <span class="string">=</span> <span class="string">&quot;v[0-9]*&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># regex for ignoring tags</span></span><br><span class="line"><span class="string">ignore_tags</span> <span class="string">=</span> <span class="string">&quot;v.*-beta.*&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>这样定义之后，正式版进行生成变更日志时会寻找上一条正式版的版本记录，会跳过与测试版本的比对，这样子就可以将测试过程中的变更日志也一并包含到最后的正式版中。</p>
+<p>目前为止基础的配置就完成了。</p>
+<h2 id="配置GitHub-Actions"><a href="#配置GitHub-Actions" class="headerlink" title="配置GitHub Actions"></a>配置GitHub Actions</h2><p>我们在jobs中定义一个job专门用以生成Changelog文本并显示在对应的Release变更日志中。</p>
+<p>在配置文件中，将路径改为仓库中存放git-cliff配置文件的路径。</p>
+<p>在Release step中，将生成的Changelog文本推送至对应的变更日志中。</p>
+<p>完整Release workflow如下:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">build-go-binary</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">release:</span></span><br><span class="line">    <span class="attr">types:</span> [<span class="string">created</span>] <span class="comment"># 表示在创建新的 Release 时触发</span></span><br><span class="line"></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">changelog:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">Generate</span> <span class="string">changelog</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">outputs:</span></span><br><span class="line">      <span class="attr">release_body:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.git-cliff.outputs.content</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v3</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">fetch-depth:</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Generate</span> <span class="string">a</span> <span class="string">changelog</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">orhun/git-cliff-action@v2</span></span><br><span class="line">        <span class="attr">id:</span> <span class="string">git-cliff</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">config:</span> <span class="string">git-cliff/cliff.toml</span></span><br><span class="line">          <span class="attr">args:</span> <span class="string">-vv</span> <span class="string">--latest</span> <span class="string">--strip</span> <span class="string">&#x27;footer&#x27;</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">          <span class="attr">OUTPUT:</span> <span class="string">CHANGES.md</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Release</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">softprops/action-gh-release@v1</span></span><br><span class="line">        <span class="attr">if:</span> <span class="string">startsWith(github.ref,</span> <span class="string">&#x27;refs/tags/&#x27;</span><span class="string">)</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">body:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.git-cliff.outputs.content</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GITHUB_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">        <span class="attr">env:</span></span><br><span class="line">          <span class="attr">GITHUB_REPOSITORY:</span> <span class="string">$&#123;&#123;</span> <span class="string">github.repository</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">build-go-binary:</span></span><br><span class="line">    <span class="string">...</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>在workflow中，我们使用到<code>$&#123;&#123; secrets.GITHUB_TOKEN &#125;&#125;</code>作为身份验证，需要在设置中开启对于仓库的读写权限，请参考上篇文章中的配置步骤。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>好看的Release Changelog也是吸引更多用户的一个有效手段，同时对于后续的维护人员，也可以简单地通过Changelog快速了解到不同版本号之间的差异。Hope u enjoy!</p>
+
+
+<div class="article-footer fs14"><section id="license"><div class="header"><span>许可协议</span></div><div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div></section></div>
+
+</article>
+
+<div class="related-wrap" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body"><div class="post-title h2"><a href="/2023/07/13/%E5%A4%9ADocker%E4%BB%93%E5%BA%93Github%20Actions%E6%B5%81%E7%A8%8B%20d5807c069f7742fd9fe5d9081ca00f0b/">多Docker仓库Github Actions流程</a></div></section></div>
+
+
+
+
+
+
+  <div class='related-wrap md' id="comments">
+    <div class='cmt-title cap theme'>
+      快来参与讨论吧
+    </div>
+    <div class='cmt-body utterances'>
+      
+
+<svg class="loading" style="vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2709"><path d="M832 512c0-176-144-320-320-320V128c211.2 0 384 172.8 384 384h-64zM192 512c0 176 144 320 320 320v64C300.8 896 128 723.2 128 512h64z" p-id="2710"></path></svg>
+
+<div id="utterances" repo="hamster1963/blogcom" issue-term="pathname" theme="github-light"></div>
+
+    </div>
+  </div>
+
+
+
+      
+<footer class="page-footer fs12"><hr><div><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p><a href="https://buycoffee.top/">@Hamster</a></p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script')
+      script.src = src
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.1.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper/swiper-bundle.min.css","js":"https://unpkg.com/swiper/swiper-bundle.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":300,"interval":100,"scale":1});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":false,"service":"flying_pages","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+  <script>
+  function utterances(){
+    if(!document.getElementById("utterances"))return;
+    setTimeout(function() {
+      var checkUtterances = setInterval(function () {
+        var el = document.getElementById("utterances");
+        if (!el) return
+        clearInterval(checkUtterances)
+        try {
+          el.innerHTML="";
+        } catch (error) {}
+        var script = document.createElement('script');
+        script.src = 'https://utteranc.es/client.js';
+        const keys = ['repo', 'issue-term', 'issue-number', 'theme', 'label', 'crossorigin'];
+        keys.forEach((key, i) => {
+          if (el.attributes[key] && el.attributes[key].value) {
+            script.setAttribute(key, el.attributes[key].value);
+          }
+        });
+        el.appendChild(script);
+       }, 200)
+    });
+  }
+  utterances();
+</script>
+
+
+
+
+<!-- inject -->
+
+
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"position":"right","hOffset":50,"vOffset":-40,"width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
