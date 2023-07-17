@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://s2.loli.net/2023/07/03/cOWbosgwY7z8XQx.png">
 <meta property="og:image" content="https://s2.loli.net/2023/07/03/4Sq3IfOmTg1AGLM.png">
 <meta property="article:published_time" content="2023-07-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-07-03T01:46:40.244Z">
+<meta property="article:modified_time" content="2023-07-17T10:49:25.645Z">
 <meta property="article:author" content="Hamster">
 <meta property="article:tag" content="Go">
 <meta property="article:tag" content="Network">
@@ -126,10 +126,11 @@
 
 <article class='content md post reveal'>
 <h1 class="article-title"><span>用Go构建一套网络监控系统</span></h1>
-<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>入职第二天，主管就马上下来了一个需求，监控终端的网络。原因是公司的网络很差，总是有同事反映网络很慢，钉钉不断断开重连，连接本地的群晖文件服务器也有问题，但目前的同事的应对手段主要就是重启路由器与服务器，总是没有从根源上解决问题，因此想找到一个可以稳定监控的方法。</p>
-<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p>公司主营业务是跨境电商，因此在宽带的数量上达到了惊人的6条宽带，其中4条为专线宽带，不需要太多操心，其他例如运营，设计，开发与IT部门共用2条宽带，分别是电信的500M与联通的1000M宽带，从网络设备上来看就比较有意思了。</p>
+<h2 id="项目背景"><a href="#项目背景" class="headerlink" title="项目背景"></a>项目背景</h2><p>入职第二天，主管就马上下来了一个需求，监控终端的网络。原因是公司的网络很差，总是有同事反映网络很慢，钉钉不断断开重连，连接本地的群晖文件服务器也有问题，但目前的应对手段主要就是重启路由器与服务器，因此想找到一个可以稳定监控的方法。</p>
+<h2 id="网络架构"><a href="#网络架构" class="headerlink" title="网络架构"></a>网络架构</h2><p>公司主营业务是跨境电商，因此在宽带的数量上，其中有2条为专线宽带，不需要太多操心，其他例如运营用1条电信宽带，设计，开发与IT部门共用2条宽带，分别是电信的500M与联通的1000M宽带，从网络设备上来看就比较有意思了。</p>
 <ol>
 <li>联通光猫→蒲公英路由</li>
+<li>电信光猫→蒲公英路由</li>
 <li>电信光猫→蒲公英路由</li>
 </ol>
 <p>采用了链路聚合的形式，将两条宽带结合为一条宽带进行使用，蒲公英后台设置中为双wan模式，由蒲公英对数据包的分发进行管理。</p>
